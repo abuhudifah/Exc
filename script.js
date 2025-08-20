@@ -1,63 +1,169 @@
-const apiBase = "https://script.google.com/macros/s/AKfycbyg6tyFpoyqrnEZGczVInMyTt9FYg5kuPLx6K6sIF0BM-2QVF9fQFo8ZwUcgagNmk-5Yg/exec";
-
-async function fetchSheet(sheetName) {
-  const res = await fetch(`${apiBase}?sheet=${sheetName}`);
-  return await res.json();
+body {
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+  background-color: #f8f9fa;
+  color: #0a3d7e;
+  direction: rtl;
 }
 
-async function loadHeader() {
-  const data = await fetchSheet("Header");
-  const menu = document.getElementById("nav-menu");
-  data.filter(e => e.status === "active").forEach(item => {
-    const li = document.createElement("li");
-    li.innerHTML = `<a href="${item.link}">${item.ar_text}</a>`;
-    menu.appendChild(li);
-  });
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
 }
 
-async function loadHero() {
-  const data = await fetchSheet("Hero Section");
-  document.getElementById("hero-title").textContent = data.find(e => e.element === "hero_title").ar_text;
-  document.getElementById("hero-subtitle").textContent = data.find(e => e.element === "hero_subtitle").ar_text;
-  document.getElementById("cta-download").textContent = data.find(e => e.element === "cta_download").ar_text;
-  document.getElementById("cta-contact").textContent = data.find(e => e.element === "cta_contact").ar_text;
-
-  const slider = document.getElementById("hero-slider");
-  data.filter(e => e.element.startsWith("slide")).forEach(slide => {
-    const img = document.createElement("img");
-    img.src = slide.image_url;
-    slider.appendChild(img);
-  });
+.main-header {
+  background-color: #0a3d7e;
+  color: white;
+  padding: 15px 0;
 }
 
-async function loadTicker() {
-  const data = await fetchSheet("TickerNews");
-  const news = data.filter(n => n.status === "active").sort((a, b) => b.priority - a.priority);
-  document.getElementById("ticker-news").textContent = news.map(n => n.news_text).join(" | ");
+.logo {
+  font-size: 24px;
+  font-weight: bold;
 }
 
-async function loadNews() {
-  const data = await fetchSheet("News");
-  const container = document.getElementById("news-container");
-  data.filter(n => n.status === "published").forEach(post => {
-    const div = document.createElement("div");
-    div.innerHTML = `<h3>${post.title}</h3><p>${post.content}</p><img src="${post.image_url}" alt="">`;
-    container.appendChild(div);
-  });
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-async function loadRates() {
-  const data = await fetchSheet("ExchangeRates");
-  const table = document.getElementById("rates-table");
-  table.innerHTML = `<tr><th>العملة</th><th>شراء صنعاء</th><th>بيع صنعاء</th><th>شراء عدن</th><th>بيع عدن</th></tr>`;
-  data.forEach(rate => {
-    const row = `<tr><td>${rate.currency_name}</td><td>${rate.buy_price_sanaa}</td><td>${rate.sell_price_sanaa}</td><td>${rate.buy_price_aden}</td><td>${rate.sell_price_aden}</td></tr>`;
-    table.innerHTML += row;
-  });
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
 }
 
-loadHeader();
-loadHero();
-loadTicker();
-loadNews();
-loadRates();
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-actions button {
+  margin-right: 10px;
+}
+
+.hero-section {
+  background-color: #e9f1f7;
+  text-align: center;
+  padding: 60px 0;
+}
+
+.hero-section h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.hero-section p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.cta-buttons a {
+  margin: 5px;
+}
+
+.section {
+  padding: 50px 0;
+}
+
+.card-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 350px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.card h3 {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.btn-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #0b7fbd;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.rates-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.rate-card {
+  background-color: #0b7fbd;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.app-buttons a {
+  margin: 10px;
+  display: inline-block;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #0b7fbd;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #0a3d7e;
+  border: 2px solid #0a3d7e;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.main-footer {
+  background-color: #0a3d7e;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
