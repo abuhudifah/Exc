@@ -4,67 +4,108 @@
   <meta charset="UTF-8">
   <title>أبو حذيفة للصرافة والتحويلات</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <img src="https://drive.google.com/uc?export=view&id=1VGM4hLEOy6xqwvvAOrLholLcSTfxIuSn" alt="شعار أبو حذيفة" class="logo">
-      <ul id="nav-menu"></ul>
-      <button id="theme-toggle">الوضع الليلي</button>
-      <button id="login-btn">تسجيل الدخول</button>
-    </nav>
+
+  <header class="main-header">
+    <div class="container">
+      <div class="logo">أبو حذيفة</div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#news">المنشورات</a></li>
+          <li><a href="#rates">أسعار الصرف</a></li>
+          <li><a href="#app">تطبيق واصل كاش</a></li>
+          <li><a href="#contact">اتصل بنا</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="btn-secondary">الوضع الليلي</button>
+          <button class="btn-primary">تسجيل الدخول</button>
+        </div>
+      </nav>
+    </div>
   </header>
 
-  <section id="hero">
-    <div id="hero-slider" class="slider"></div>
-    <h1 id="hero-title"></h1>
-    <p id="hero-subtitle"></p>
-    <a href="#" id="cta-download" class="btn"></a>
-    <a href="#contact" id="cta-contact" class="btn"></a>
-  </section>
-
-  <section id="ticker">
-    <marquee id="ticker-news"></marquee>
-  </section>
-
-  <section id="news">
-    <h2>أحدث المنشورات</h2>
-    <div id="news-container"></div>
-    <button id="load-more-news">عرض المزيد</button>
-  </section>
-
-  <section id="rates">
-    <h2>أسعار الصرف</h2>
-    <table id="rates-table"></table>
-  </section>
-
-  <section id="app">
-    <h2>تحميل تطبيق واصل كاش</h2>
-    <div class="app-buttons">
-      <a href="#" id="btn-ios">App Store</a>
-      <a href="#" id="btn-android">Google Play</a>
-      <a href="#" id="btn-direct">تحميل مباشر</a>
+  <section id="hero" class="hero-section">
+    <div class="container">
+      <h1>أبو حذيفة للصرافة والتحويلات</h1>
+      <p>خدمات مالية موثوقة وسريعة في متناول يدك</p>
+      <div class="cta-buttons">
+        <a href="#app" class="btn-primary">حمل تطبيق واصل كاش</a>
+        <a href="#contact" class="btn-secondary">تواصل معنا</a>
+      </div>
     </div>
   </section>
 
-  <section id="contact">
-    <h2>اتصل بنا</h2>
-    <form id="contact-form">
-      <input type="text" placeholder="الاسم الكامل">
-      <input type="email" placeholder="البريد الإلكتروني">
-      <input type="tel" placeholder="رقم الهاتف">
-      <textarea placeholder="الرسالة"></textarea>
-      <button type="submit">إرسال الطلب</button>
-    </form>
-    <div id="contact-info"></div>
+  <section id="news" class="section">
+    <div class="container">
+      <h2>أحدث المنشورات</h2>
+      <div class="card-grid">
+        <div class="card">
+          <img src="https://i.postimg.cc/0rgs2ryP/20250718-014918.png" alt="منشور">
+          <h3>مستمرون في بناء الثقة</h3>
+          <p>نواصل تقديم خدمات متميزة وموثوقة في مجال الصرافة والتحويلات.</p>
+          <a href="#" class="btn-link">قراءة المزيد</a>
+        </div>
+        <div class="card">
+          <img src="https://drive.google.com/uc?export=view&id=1mXaPZh7qYVQmlWPCRCMtXBj8VBORkW1K" alt="تطبيق">
+          <h3>إعلان لتطبيق واصل كاش</h3>
+          <p>سداد رصيدك للشركات اليمنية بسهولة وسرعة عبر التطبيق.</p>
+          <a href="#" class="btn-link">قراءة المزيد</a>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    <p>© 2025 أبو حذيفة للصرافة والتحويلات. جميع الحقوق محفوظة.</p>
+  <section id="rates" class="section">
+    <div class="container">
+      <h2>أسعار الصرف</h2>
+      <div class="rates-grid">
+        <div class="rate-card">
+          <h3>الدولار الأمريكي</h3>
+          <p>صنعاء: شراء 534 | بيع 536</p>
+          <p>عدن: شراء 1620 | بيع 1676</p>
+        </div>
+        <div class="rate-card">
+          <h3>الريال السعودي</h3>
+          <p>صنعاء: شراء 139 | بيع 140</p>
+          <p>عدن: شراء 425 | بيع 440</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="app" class="section">
+    <div class="container">
+      <h2>تحميل تطبيق واصل كاش</h2>
+      <p>احصل على خدماتنا من هاتفك الذكي في أي وقت ومكان.</p>
+      <div class="app-buttons">
+        <a href="#" class="btn-primary">App Store</a>
+        <a href="#" class="btn-primary">Google Play</a>
+        <a href="#" class="btn-secondary">تحميل مباشر</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>اتصل بنا</h2>
+      <form class="contact-form">
+        <input type="text" placeholder="الاسم الكامل">
+        <input type="email" placeholder="البريد الإلكتروني">
+        <input type="tel" placeholder="رقم الهاتف">
+        <textarea placeholder="الرسالة"></textarea>
+        <button type="submit" class="btn-primary">إرسال</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="main-footer">
+    <div class="container">
+      <p>© 2025 أبو حذيفة للصرافة والتحويلات. جميع الحقوق محفوظة.</p>
+    </div>
   </footer>
 
-  <script src="script.js"></script>
 </body>
 </html>
