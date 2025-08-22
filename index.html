@@ -2,110 +2,114 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>أبو حذيفة للصرافة والتحويلات</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>أبو حذيفة للصرافة والتحويلات</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <header class="main-header">
-    <div class="container">
-      <div class="logo">أبو حذيفة</div>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="#news">المنشورات</a></li>
-          <li><a href="#rates">أسعار الصرف</a></li>
-          <li><a href="#app">تطبيق واصل كاش</a></li>
-          <li><a href="#contact">اتصل بنا</a></li>
-        </ul>
-        <div class="nav-actions">
-          <button class="btn-secondary">الوضع الليلي</button>
-          <button class="btn-primary">تسجيل الدخول</button>
-        </div>
-      </nav>
-    </div>
+  <!-- Header -->
+  <header>
+    <img src="https://i.imgur.com/huAAjij.png" alt="شعار الشركة">
+    <nav>
+      <ul>
+        <li><a href="#hero">الرئيسية</a></li>
+        <li><a href="#posts">المنشورات</a></li>
+        <li><a href="#rates">أسعار الصرف</a></li>
+        <li><a href="#app">تطبيق واصل كاش</a></li>
+        <li><a href="#contact">اتصل بنا</a></li>
+      </ul>
+    </nav>
+    <a href="admin/login.html" class="login-btn">تسجيل الدخول</a>
   </header>
 
-  <section id="hero" class="hero-section">
-    <div class="container">
-      <h1>أبو حذيفة للصرافة والتحويلات</h1>
-      <p>خدمات مالية موثوقة وسريعة في متناول يدك</p>
-      <div class="cta-buttons">
-        <a href="#app" class="btn-primary">حمل تطبيق واصل كاش</a>
-        <a href="#contact" class="btn-secondary">تواصل معنا</a>
-      </div>
+  <!-- Hero Section -->
+  <section id="hero">
+    <h1>أبو حذيفة للصرافة والتحويلات</h1>
+    <p>خدمات الصرافة والتحويلات المالية بسرعة وكفاءة عالية</p>
+    <div class="slider">
+      <img src="https://i.imgur.com/tZhzGCN.jpeg">
+      <img src="https://i.imgur.com/MlVEReX.jpeg">
+      <img src="https://i.imgur.com/iI4j9aI.jpeg">
+    </div>
+    <div class="cta">
+      <a href="#app">📲 حمل تطبيق واصل كاش</a>
+      <a href="#contact">📞 تواصل معنا</a>
     </div>
   </section>
 
-  <section id="news" class="section">
-    <div class="container">
-      <h2>أحدث المنشورات</h2>
-      <div class="card-grid">
-        <div class="card">
-          <img src="https://i.postimg.cc/0rgs2ryP/20250718-014918.png" alt="منشور">
-          <h3>مستمرون في بناء الثقة</h3>
-          <p>نواصل تقديم خدمات متميزة وموثوقة في مجال الصرافة والتحويلات.</p>
-          <a href="#" class="btn-link">قراءة المزيد</a>
-        </div>
-        <div class="card">
-          <img src="https://drive.google.com/uc?export=view&id=1mXaPZh7qYVQmlWPCRCMtXBj8VBORkW1K" alt="تطبيق">
-          <h3>إعلان لتطبيق واصل كاش</h3>
-          <p>سداد رصيدك للشركات اليمنية بسهولة وسرعة عبر التطبيق.</p>
-          <a href="#" class="btn-link">قراءة المزيد</a>
-        </div>
-      </div>
+  <!-- Posts Section -->
+  <section id="posts">
+    <h2>أحدث المنشورات</h2>
+    <p>تابع أحدث التحديثات والأخبار</p>
+    <div class="post-grid">
+      <img src="https://i.imgur.com/KJfnXma.jpeg">
+      <img src="https://i.imgur.com/GU11ea6.jpeg">
+      <img src="https://drive.google.com/uc?export=view&id=1r9yWzy-47N3YgNUOYpK3zhYfQZzxGUDl">
     </div>
   </section>
 
-  <section id="rates" class="section">
-    <div class="container">
-      <h2>أسعار الصرف</h2>
-      <div class="rates-grid">
-        <div class="rate-card">
-          <h3>الدولار الأمريكي</h3>
-          <p>صنعاء: شراء 534 | بيع 536</p>
-          <p>عدن: شراء 1620 | بيع 1676</p>
-        </div>
-        <div class="rate-card">
-          <h3>الريال السعودي</h3>
-          <p>صنعاء: شراء 139 | بيع 140</p>
-          <p>عدن: شراء 425 | بيع 440</p>
-        </div>
-      </div>
+  <!-- Exchange Rates -->
+  <section id="rates">
+    <h2>أسعار الصرف</h2>
+    <p>أسعار محدثة يومياً لضمان أفضل قيمة</p>
+    <table>
+      <thead>
+        <tr>
+          <th>المدينة</th><th>دولار شراء</th><th>دولار بيع</th><th>ريال شراء</th><th>ريال بيع</th>
+        </tr>
+      </thead>
+      <tbody id="exchangeRates"></tbody>
+    </table>
+    <p>📌 آخر تحديث: <span id="lastUpdated"></span></p>
+  </section>
+
+  <!-- App Section -->
+  <section id="app">
+    <h2>تحميل تطبيق واصل كاش</h2>
+    <p>احصل على خدماتنا المميزة من هاتفك الذكي</p>
+    <img src="https://i.imgur.com/q31oh1i.jpeg" alt="شعار التطبيق">
+    <div class="download-buttons">
+      <a href="#">📱 متجر آبل</a>
+      <a href="#">📱 جوجل بلاي</a>
+      <a href="#">📥 تحميل مباشر</a>
     </div>
   </section>
 
-  <section id="app" class="section">
-    <div class="container">
-      <h2>تحميل تطبيق واصل كاش</h2>
-      <p>احصل على خدماتنا من هاتفك الذكي في أي وقت ومكان.</p>
-      <div class="app-buttons">
-        <a href="#" class="btn-primary">App Store</a>
-        <a href="#" class="btn-primary">Google Play</a>
-        <a href="#" class="btn-secondary">تحميل مباشر</a>
-      </div>
-    </div>
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>اتصل بنا</h2>
+    <p>نحن هنا لخدمتكم</p>
+    <ul>
+      <li>📞 <a href="https://wa.me/967733440054">خدمة العملاء</a></li>
+      <li>💬 <a href="https://wa.me/967772391570">الخدمة الذاتية</a></li>
+      <li>📧 info@abuhuthaifa.com</li>
+      <li>📍 صنعاء، اليمن</li>
+    </ul>
+    <form>
+      <input type="text" placeholder="الاسم">
+      <input type="email" placeholder="البريد الإلكتروني">
+      <input type="tel" placeholder="رقم الهاتف">
+      <select>
+        <option>تحويل مالي</option>
+        <option>استفسار عام</option>
+      </select>
+      <button type="submit">إرسال</button>
+    </form>
   </section>
 
-  <section id="contact" class="section">
-    <div class="container">
-      <h2>اتصل بنا</h2>
-      <form class="contact-form">
-        <input type="text" placeholder="الاسم الكامل">
-        <input type="email" placeholder="البريد الإلكتروني">
-        <input type="tel" placeholder="رقم الهاتف">
-        <textarea placeholder="الرسالة"></textarea>
-        <button type="submit" class="btn-primary">إرسال</button>
-      </form>
-    </div>
-  </section>
-
-  <footer class="main-footer">
-    <div class="container">
-      <p>© 2025 أبو حذيفة للصرافة والتحويلات. جميع الحقوق محفوظة.</p>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 شركة أبو حذيفة للصرافة والتحويلات</p>
+    <div class="social">
+      <a href="#">📘 فيسبوك</a>
+      <a href="#">🐦 تويتر</a>
+      <a href="#">📸 إنستغرام</a>
+      <a href="https://wa.me/967733440054">💬 واتساب</a>
     </div>
   </footer>
 
+  <script src="scripts/app.js"></script>
 </body>
 </html>
