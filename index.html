@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام التحصيل المتطور - شركة أبو حذيفة</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-orange: #f39c12;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #ecf0f1;
+            --border-color: #ddd;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+            padding: 10px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 15px 0;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin-left: 10px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 50%;
+        }
+        
+        .header-text {
+            text-align: right;
+        }
+        
+        .header-text h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .header-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        /* أنماط التسجيل */
+        #login-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        
+        #login-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        #login-section input {
+            margin: 10px 0;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            width: 100%;
+        }
+        
+        #login-section button {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        /* أنماط لوحة التحكم */
+        .dashboard {
+            display: none;
+        }
+        
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .customer-card, .collection-item {
+            background: var(--light-bg);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .stats-box {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-blue));
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .stats-box h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .stats-box p {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        /* أزرار */
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary { background: var(--accent-blue); color: white; }
+        .btn-success { background: var(--accent-green); color: white; }
+        .btn-danger { background: var(--secondary-color); color: white; }
+        .btn-warning { background: var(--accent-orange); color: white; }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .nav-tab {
+            padding: 15px;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- شاشة التسجيل -->
+        <div id="login-section">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-chart-line fa-2x" style="color: var(--primary-color);"></i>
+                </div>
+                <div class="header-text">
+                    <h1>شركة أبو حذيفة</h1>
+                    <p>نظام التحصيل المتطور</p>
+                </div>
+            </div>
+            
+            <h2>تسجيل الدخول</h2>
+            <input type="text" id="login-username" placeholder="اسم المستخدم">
+            <input type="password" id="login-password" placeholder="كلمة المرور">
+            <button onclick="handleLogin()">دخول إلى النظام</button>
+        </div>
+
+        <!-- لوحة تحكم المندوب -->
+        <div id="collector-dashboard" class="dashboard">
+            <header>
+                <div class="logo-container">
+                    <div class="logo">
+                        <i class="fas fa-user-tie fa-2x" style="color: var(--primary-color);"></i>
+                    </div>
+                    <div class="header-text">
+                        <h1>مرحباً <span id="collector-name"></span></h1>
+                        <p>لوحة تحكم المندوب</p>
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="logout()">تسجيل الخروج</button>
+            </header>
+
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-tab="customers">العملاء</div>
+                <div class="nav-tab" data-tab="collections">التحصيلات</div>
+                <div class="nav-tab" data-tab="expenses">المصروفات</div>
+                <div class="nav-tab" data-tab="reports">التقارير</div>
+            </div>
+
+            <div class="tab-content active" id="customers-tab">
+                <div class="section">
+                    <h3>العملاء المستحقين للتحصيل</h3>
+                    <div id="customers-list"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="collections-tab">
+                <div class="section">
+                    <h3>إضافة تحصيل جديد</h3>
+                    <div class="form-group">
+                        <label>اختر العميل:</label>
+                        <select id="collection-customer"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>المبلغ:</label>
+                        <input type="number" id="collection-amount" placeholder="المبلغ المحصل">
+                    </div>
+                    <div class="form-group">
+                        <label>نوع التحصيل:</label>
+                        <select id="collection-type">
+                            <option value="نقدي">نقدي</option>
+                            <option value="تحويل">تحويل</option>
+                            <option value="بطاقة">بطاقة</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-success" onclick="addCollection()">إضافة تحصيل</button>
+                </div>
+
+                <div class="section">
+                    <h3>تحصيلاتي اليوم</h3>
+                    <div id="collections-list"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="expenses-tab">
+                <div class="section">
+                    <h3>إضافة مصروف جديد</h3>
+                    <div class="form-group">
+                        <label>نوع المصروف:</label>
+                        <select id="expense-type">
+                            <option value="مصاريف للبيت">مصاريف للبيت</option>
+                            <option value="نثريات">نثريات</option>
+                            <option value="مواصلات">مواصلات</option>
+                            <option value="أخرى">أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>المبلغ:</label>
+                        <input type="number" id="expense-amount" placeholder="مبلغ المصروف">
+                    </div>
+                    <div class="form-group">
+                        <label>التفاصيل:</label>
+                        <textarea id="expense-details" placeholder="تفاصيل المصروف"></textarea>
+                    </div>
+                    <button class="btn btn-warning" onclick="addExpense()">إضافة مصروف</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- لوحة تحكم الإدارة -->
+        <div id="admin-dashboard" class="dashboard">
+            <header>
+                <div class="logo-container">
+                    <div class="logo">
+                        <i class="fas fa-crown fa-2x" style="color: var(--primary-color);"></i>
+                    </div>
+                    <div class="header-text">
+                        <h1>مرحباً <span id="admin-name"></span></h1>
+                        <p>لوحة تحكم الإدارة</p>
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="logout()">تسجيل الخروج</button>
+            </header>
+
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-tab="stats">الإحصائيات</div>
+                <div class="nav-tab" data-tab="manage-customers">إدارة العملاء</div>
+                <div class="nav-tab" data-tab="all-data">جميع البيانات</div>
+                <div class="nav-tab" data-tab="reports">التقارير</div>
+            </div>
+
+            <div class="tab-content active" id="stats-tab">
+                <div class="section">
+                    <h3>إحصائيات اليوم</h3>
+                    <div id="stats-container" style="display: flex; flex-wrap: wrap;">
+                        <div class="stats-box">
+                            <h4>إجمالي التحصيلات</h4>
+                            <p id="total-collections">0 ريال</p>
+                        </div>
+                        <div class="stats-box">
+                            <h4>إجمالي المصروفات</h4>
+                            <p id="total-expenses">0 ريال</p>
+                        </div>
+                        <div class="stats-box">
+                            <h4>صافي اليوم</h4>
+                            <p id="net-amount">0 ريال</p>
+                        </div>
+                        <div class="stats-box">
+                            <h4>عدد العملاء</h4>
+                            <p id="total-customers">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="manage-customers-tab">
+                <div class="section">
+                    <h3>إضافة عميل جديد</h3>
+                    <div class="form-group">
+                        <label>اسم العميل:</label>
+                        <input type="text" id="new-customer-name" placeholder="اسم العميل">
+                    </div>
+                    <div class="form-group">
+                        <label>المبلغ المستحق:</label>
+                        <input type="number" id="new-customer-amount" placeholder="المبلغ المستحق">
+                    </div>
+                    <div class="form-group">
+                        <label>العنوان:</label>
+                        <input type="text" id="new-customer-address" placeholder="عنوان العميل">
+                    </div>
+                    <div class="form-group">
+                        <label>المندوب المسؤول:</label>
+                        <select id="new-customer-collector"></select>
+                    </div>
+                    <button class="btn btn-success" onclick="addNewCustomer()">إضافة عميل</button>
+                </div>
+
+                <div class="section">
+                    <h3>جميع العملاء</h3>
+                    <div id="all-customers-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // الإعدادات الأساسية
+    const SHEET_ID = '1mFpectWu05fMCtmU-UfhRWHgLyeN3B0MkN-_-SP5YTw';
+    const API_KEY = 'AIzaSyB90kR5fkN1QpQY8p7Q5Q8Q5Q8Q5Q8Q5Q8Q'; // سيتم استبداله
+
+    // بيانات المستخدم الحالي
+    let currentUser = null;
+
+    // تهيئة الصفحة
+    function init() {
+        checkLoginStatus();
+        setupEventListeners();
+    }
+
+    // التحقق من حالة التسجيل
+    function checkLoginStatus() {
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            showDashboard();
+        }
+    }
+
+    // تسجيل الدخول
+    async function handleLogin() {
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+
+        if (!username || !password) {
+            alert('يرجى إدخال اسم المستخدم وكلمة المرور');
+            return;
+        }
+
+        try {
+            const users = await loadSheetData('users');
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showDashboard();
+            } else {
+                alert('اسم المستخدم أو كلمة المرور غير صحيح');
+            }
+        } catch (error) {
+            alert('خطأ في الاتصال بالخادم');
+            console.error('Login error:', error);
+        }
+    }
+
+    // عرض لوحة التحكم المناسبة
+    function showDashboard() {
+        document.getElementById('login-section').style.display = 'none';
+        
+        if (currentUser.role === 'admin') {
+            document.getElementById('admin-dashboard').style.display = 'block';
+            document.getElementById('admin-name').textContent = currentUser.name;
+            loadAdminData();
+        } else {
+            document.getElementById('collector-dashboard').style.display = 'block';
+            document.getElementById('collector-name').textContent = currentUser.name;
+            loadCollectorData();
+        }
+    }
+
+    // تسجيل الخروج
+    function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        document.getElementById('login-section').style.display = 'block';
+        document.getElementById('admin-dashboard').style.display = 'none';
+        document.getElementById('collector-dashboard').style.display = 'none';
+    }
+
+    // تحميل بيانات من Google Sheets
+    async function loadSheetData(sheetName) {
+        try {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${sheetName}?key=${API_KEY}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (!data.values) return [];
+            
+            const [headers, ...rows] = data.values;
+            return rows.map(row => {
+                const obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = row[index] || '';
+                });
+                return obj;
+            });
+        } catch (error) {
+            console.error('Error loading sheet data:', error);
+            return [];
+        }
+    }
+
+    // تحميل بيانات المندوب
+    async function loadCollectorData() {
+        const customers = await loadSheetData('customers');
+        const myCustomers = customers.filter(c => c.collector_id == currentUser.id && c.status === 'pending');
+        
+        displayCustomers(myCustomers);
+        populateCustomerDropdown(myCustomers);
+    }
+
+    // تحميل بيانات الإدارة
+    async function loadAdminData() {
+        const [collections, expenses, customers] = await Promise.all([
+            loadSheetData('collections'),
+            loadSheetData('expenses'),
+            loadSheetData('customers')
+        ]);
+
+        displayStats(collections, expenses, customers);
+        displayAllCustomers(customers);
+        populateCollectorsDropdown();
+    }
+
+    // عرض العملاء للمندوب
+    function displayCustomers(customers) {
+        const container = document.getElementById('customers-list');
+        container.innerHTML = '';
+
+        if (customers.length === 0) {
+            container.innerHTML = '<p>لا توجد عملاء مستحقين للتحصيل</p>';
+            return;
+        }
+
+        customers.forEach(customer => {
+            container.innerHTML += `
+                <div class="customer-card">
+                    <h4>${customer.name}</h4>
+                    <p>المبلغ: ${Number(customer.amount).toLocaleString()} ريال</p>
+                    <p>العنوان: ${customer.address}</p>
+                    <p>تاريخ الاستحقاق: ${customer.due_date}</p>
+                </div>
+            `;
+        });
+    }
+
+    // عرض الإحصائيات للإدارة
+    function displayStats(collections, expenses, customers) {
+        const today = new Date().toISOString().split('T')[0];
+        
+        const todayCollections = collections.filter(c => c.date === today);
+        const todayExpenses = expenses.filter(e => e.date === today);
+
+        const totalCollections = todayCollections.reduce((sum, c) => sum + Number(c.amount), 0);
+        const totalExpenses = todayExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
+        const netAmount = totalCollections - totalExpenses;
+
+        document.getElementById('total-collections').textContent = totalCollections.toLocaleString() + ' ريال';
+        document.getElementById('total-expenses').textContent = totalExpenses.toLocaleString() + ' ريال';
+        document.getElementById('net-amount').textContent = netAmount.toLocaleString() + ' ريال';
+        document.getElementById('total-customers').textContent = customers.length;
+    }
+
+    // إعداد مستمعي الأحداث
+    function setupEventListeners() {
+        // التنقل بين التبويبات
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                activateTab(tabName);
+            });
+        });
+    }
+
+    // تفعيل التبويب
+    function activateTab(tabName) {
+        // إلغاء تفعيل جميع التبويبات
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // تفعيل التبويب المحدد
+        document.querySelector(`.nav-tab[data-tab="${tabName}"]`).classList.add('active');
+        document.getElementById(`${tabName}-tab`).classList.add('active');
+    }
+
+    // الدوال الأخرى سيتم إكمالها...
+    // addCollection, addExpense, addNewCustomer, etc.
+
+    // تهيئة الصفحة عند التحميل
+    window.onload = init;
+    </script>
+</body>
+</html>
