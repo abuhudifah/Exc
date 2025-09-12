@@ -256,6 +256,18 @@
                 flex-direction: column;
             }
         }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background: var(--accent-green);
+            color: white;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -276,6 +288,8 @@
             <input type="text" id="login-username" placeholder="اسم المستخدم">
             <input type="password" id="login-password" placeholder="كلمة المرور">
             <button onclick="handleLogin()">دخول إلى النظام</button>
+            
+            <div id="login-message" style="color: red; margin-top: 10px; display: none;"></div>
         </div>
 
         <!-- لوحة تحكم المندوب -->
@@ -436,10 +450,29 @@
         </div>
     </div>
 
+    <div id="notification" class="notification"></div>
+
     <script>
-    // الإعدادات الأساسية
-    const SHEET_ID = '1mFpectWu05fMCtmU-UfhRWHgLyeN3B0MkN-_-SP5YTw';
-    const API_KEY = 'AIzaSyB90kR5fkN1QpQY8p7Q5Q8Q5Q8Q5Q8Q5Q8Q'; // سيتم استبداله
+    // بيانات المستخدمين الثابتة (بدلاً من الاتصال بـ Google Sheets)
+    const USERS_DATA = [
+        { id: 1, username: "المدير", password: "777714014", role: "admin", name: "مدير النظام", phone: "777714014", status: "active" },
+        { id: 2, username: "مالك", password: "775672439", role: "collector", name: "مالك الوصابي", phone: "775672439", status: "active" },
+        { id: 3, username: "شمسان", password: "11223344", role: "collector", name: "شمسان محمد", phone: "11223344", status: "active" },
+        { id: 4, username: "علاء", password: "132435", role: "collector", name: "علاء المعلمي", phone: "132435", status: "active" },
+        { id: 5, username: "المنذر", password: "11335577", role: "collector", name: "المنذر", phone: "11335577", status: "active" }
+    ];
+
+    // بيانات تجريبية للعملاء
+    const CUSTOMERS_DATA = [
+        { id: 1, name: "أحمد علي", amount: "150000", address: "صنعاء - التعاون", collector_id: "2", status: "pending", due_date: "2024-02-15", created_at: "2024-01-25" },
+        { id: 2, name: "محمد حسين", amount: "75000", address: "صنعاء - حدة", collector_id: "3", status: "pending", due_date: "2024-02-20", created_at: "2024-01-25" },
+        { id: 3, name: "علي أحمد", amount: "200000", address: "صنعاء - أزال", collector_id: "4", status: "pending", due_date: "2024-02-25", created_at: "2024-01-25" }
+    ];
+
+    // بيانات تجريبية أخرى
+    let COLLECTIONS_DATA = [];
+    let EXPENSES_DATA = [];
+    let ACCOUNTS_DATA = [];
 
     // بيانات المستخدم الحالي
     let currentUser = null;
@@ -448,6 +481,7 @@
     function init() {
         checkLoginStatus();
         setupEventListeners();
+        loadFromLocalStorage();
     }
 
     // التحقق من حالة التسجيل
@@ -459,31 +493,63 @@
         }
     }
 
+    // تحميل البيانات من localStorage
+    function loadFromLocalStorage() {
+        const savedCollections = localStorage.getItem('collections');
+        const savedExpenses = localStorage.getItem('expenses');
+        const savedAccounts = localStorage.getItem('accounts');
+
+        if (savedCollections) COLLECTIONS_DATA = JSON.parse(savedCollections);
+        if (savedExpenses) EXPENSES_DATA = JSON.parse(savedExpenses);
+        if (savedAccounts) ACCOUNTS_DATA = JSON.parse(savedAccounts);
+    }
+
+    // حفظ البيانات إلى localStorage
+    function saveToLocalStorage() {
+        localStorage.setItem('collections', JSON.stringify(COLLECTIONS_DATA));
+        localStorage.setItem('expenses', JSON.stringify(EXPENSES_DATA));
+        localStorage.setItem('accounts', JSON.stringify(ACCOUNTS_DATA));
+    }
+
     // تسجيل الدخول
-    async function handleLogin() {
+    function handleLogin() {
         const username = document.getElementById('login-username').value;
         const password = document.getElementById('login-password').value;
 
         if (!username || !password) {
-            alert('يرجى إدخال اسم المستخدم وكلمة المرور');
+            showMessage('يرجى إدخال اسم المستخدم وكلمة المرور', 'error');
             return;
         }
 
-        try {
-            const users = await loadSheetData('users');
-            const user = users.find(u => u.username === username && u.password === password);
+        const user = USERS_DATA.find(u => u.username === username && u.password === password);
 
-            if (user) {
-                currentUser = user;
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                showDashboard();
-            } else {
-                alert('اسم المستخدم أو كلمة المرور غير صحيح');
-            }
-        } catch (error) {
-            alert('خطأ في الاتصال بالخادم');
-            console.error('Login error:', error);
+        if (user) {
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            showDashboard();
+            showMessage('تم تسجيل الدخول بنجاح!', 'success');
+        } else {
+            showMessage('اسم المستخدم أو كلمة المرور غير صحيح', 'error');
         }
+    }
+
+    // عرض الرسائل
+    function showMessage(message, type = 'success') {
+        const messageDiv = document.getElementById('login-message');
+        const notification = document.getElementById('notification');
+        
+        messageDiv.textContent = message;
+        messageDiv.style.display = 'block';
+        messageDiv.style.color = type === 'error' ? 'red' : 'green';
+        
+        notification.textContent = message;
+        notification.style.display = 'block';
+        notification.style.background = type === 'error' ? 'var(--secondary-color)' : 'var(--accent-green)';
+        
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+            notification.style.display = 'none';
+        }, 3000);
     }
 
     // عرض لوحة التحكم المناسبة
@@ -508,50 +574,24 @@
         document.getElementById('login-section').style.display = 'block';
         document.getElementById('admin-dashboard').style.display = 'none';
         document.getElementById('collector-dashboard').style.display = 'none';
-    }
-
-    // تحميل بيانات من Google Sheets
-    async function loadSheetData(sheetName) {
-        try {
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${sheetName}?key=${API_KEY}`;
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            if (!data.values) return [];
-            
-            const [headers, ...rows] = data.values;
-            return rows.map(row => {
-                const obj = {};
-                headers.forEach((header, index) => {
-                    obj[header] = row[index] || '';
-                });
-                return obj;
-            });
-        } catch (error) {
-            console.error('Error loading sheet data:', error);
-            return [];
-        }
+        document.getElementById('login-username').value = '';
+        document.getElementById('login-password').value = '';
     }
 
     // تحميل بيانات المندوب
-    async function loadCollectorData() {
-        const customers = await loadSheetData('customers');
-        const myCustomers = customers.filter(c => c.collector_id == currentUser.id && c.status === 'pending');
+    function loadCollectorData() {
+        const myCustomers = CUSTOMERS_DATA.filter(c => c.collector_id == currentUser.id && c.status === 'pending');
+        const myCollections = COLLECTIONS_DATA.filter(c => c.collector_id == currentUser.id);
         
         displayCustomers(myCustomers);
         populateCustomerDropdown(myCustomers);
+        displayCollections(myCollections);
     }
 
     // تحميل بيانات الإدارة
-    async function loadAdminData() {
-        const [collections, expenses, customers] = await Promise.all([
-            loadSheetData('collections'),
-            loadSheetData('expenses'),
-            loadSheetData('customers')
-        ]);
-
-        displayStats(collections, expenses, customers);
-        displayAllCustomers(customers);
+    function loadAdminData() {
+        displayStats(COLLECTIONS_DATA, EXPENSES_DATA, CUSTOMERS_DATA);
+        displayAllCustomers(CUSTOMERS_DATA);
         populateCollectorsDropdown();
     }
 
@@ -577,6 +617,57 @@
         });
     }
 
+    // تعبئة dropdown العملاء
+    function populateCustomerDropdown(customers) {
+        const dropdown = document.getElementById('collection-customer');
+        dropdown.innerHTML = '';
+        
+        customers.forEach(customer => {
+            const option = document.createElement('option');
+            option.value = customer.id;
+            option.textContent = `${customer.name} - ${customer.amount} ريال`;
+            dropdown.appendChild(option);
+        });
+    }
+
+    // تعبئة dropdown المندوبين
+    function populateCollectorsDropdown() {
+        const dropdown = document.getElementById('new-customer-collector');
+        dropdown.innerHTML = '';
+        
+        USERS_DATA.filter(user => user.role === 'collector').forEach(collector => {
+            const option = document.createElement('option');
+            option.value = collector.id;
+            option.textContent = collector.name;
+            dropdown.appendChild(option);
+        });
+    }
+
+    // عرض التحصيلات
+    function displayCollections(collections) {
+        const container = document.getElementById('collections-list');
+        container.innerHTML = '';
+
+        if (collections.length === 0) {
+            container.innerHTML = '<p>لا توجد تحصيلات اليوم</p>';
+            return;
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+        const todayCollections = collections.filter(c => c.date === today);
+
+        todayCollections.forEach(collection => {
+            container.innerHTML += `
+                <div class="collection-item">
+                    <h4>${collection.client_name}</h4>
+                    <p>المبلغ: ${Number(collection.amount).toLocaleString()} ريال</p>
+                    <p>النوع: ${collection.type}</p>
+                    <p>التاريخ: ${collection.date}</p>
+                </div>
+            `;
+        });
+    }
+
     // عرض الإحصائيات للإدارة
     function displayStats(collections, expenses, customers) {
         const today = new Date().toISOString().split('T')[0];
@@ -594,6 +685,123 @@
         document.getElementById('total-customers').textContent = customers.length;
     }
 
+    // عرض جميع العملاء للإدارة
+    function displayAllCustomers(customers) {
+        const container = document.getElementById('all-customers-list');
+        container.innerHTML = '';
+
+        customers.forEach(customer => {
+            const collector = USERS_DATA.find(u => u.id == customer.collector_id);
+            container.innerHTML += `
+                <div class="customer-card">
+                    <h4>${customer.name}</h4>
+                    <p>المبلغ: ${Number(customer.amount).toLocaleString()} ريال</p>
+                    <p>العنوان: ${customer.address}</p>
+                    <p>المندوب: ${collector ? collector.name : 'غير معين'}</p>
+                    <p>الحالة: ${customer.status}</p>
+                </div>
+            `;
+        });
+    }
+
+    // إضافة تحصيل جديد
+    function addCollection() {
+        const customerId = document.getElementById('collection-customer').value;
+        const amount = document.getElementById('collection-amount').value;
+        const type = document.getElementById('collection-type').value;
+
+        if (!customerId || !amount || amount <= 0) {
+            showMessage('يرجى إدخال البيانات بشكل صحيح', 'error');
+            return;
+        }
+
+        const customer = CUSTOMERS_DATA.find(c => c.id == customerId);
+        const today = new Date().toISOString().split('T')[0];
+
+        const newCollection = {
+            id: COLLECTIONS_DATA.length + 1,
+            collector_id: currentUser.id,
+            client_name: customer.name,
+            amount: amount,
+            type: type,
+            date: today,
+            created_at: new Date().toISOString()
+        };
+
+        COLLECTIONS_DATA.push(newCollection);
+        saveToLocalStorage();
+
+        document.getElementById('collection-amount').value = '';
+        showMessage('تم إضافة التحصيل بنجاح', 'success');
+        displayCollections(COLLECTIONS_DATA);
+    }
+
+    // إضافة مصروف جديد
+    function addExpense() {
+        const type = document.getElementById('expense-type').value;
+        const amount = document.getElementById('expense-amount').value;
+        const details = document.getElementById('expense-details').value;
+
+        if (!amount || amount <= 0) {
+            showMessage('يرجى إدخال المبلغ بشكل صحيح', 'error');
+            return;
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+
+        const newExpense = {
+            id: EXPENSES_DATA.length + 1,
+            collector_id: currentUser.id,
+            type: type,
+            amount: amount,
+            details: details || 'لا يوجد',
+            date: today,
+            created_at: new Date().toISOString()
+        };
+
+        EXPENSES_DATA.push(newExpense);
+        saveToLocalStorage();
+
+        document.getElementById('expense-amount').value = '';
+        document.getElementById('expense-details').value = '';
+        showMessage('تم إضافة المصروف بنجاح', 'success');
+    }
+
+    // إضافة عميل جديد
+    function addNewCustomer() {
+        const name = document.getElementById('new-customer-name').value;
+        const amount = document.getElementById('new-customer-amount').value;
+        const address = document.getElementById('new-customer-address').value;
+        const collectorId = document.getElementById('new-customer-collector').value;
+
+        if (!name || !amount || !address || !collectorId) {
+            showMessage('يرجى إدخال جميع البيانات', 'error');
+            return;
+        }
+
+        const newCustomer = {
+            id: CUSTOMERS_DATA.length + 1,
+            name: name,
+            amount: amount,
+            address: address,
+            collector_id: collectorId,
+            status: 'pending',
+            due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // بعد 30 يوم
+            created_at: new Date().toISOString().split('T')[0]
+        };
+
+        CUSTOMERS_DATA.push(newCustomer);
+        showMessage('تم إضافة العميل بنجاح', 'success');
+
+        // مسح الحقول
+        document.getElementById('new-customer-name').value = '';
+        document.getElementById('new-customer-amount').value = '';
+        document.getElementById('new-customer-address').value = '';
+
+        // تحديث العرض
+        displayAllCustomers(CUSTOMERS_DATA);
+    }
+
     // إعداد مستمعي الأحداث
     function setupEventListeners() {
         // التنقل بين التبويبات
@@ -602,6 +810,13 @@
                 const tabName = tab.getAttribute('data-tab');
                 activateTab(tabName);
             });
+        });
+
+        // إدخال البيانات
+        document.getElementById('login-password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleLogin();
+            }
         });
     }
 
@@ -619,9 +834,6 @@
         document.querySelector(`.nav-tab[data-tab="${tabName}"]`).classList.add('active');
         document.getElementById(`${tabName}-tab`).classList.add('active');
     }
-
-    // الدوال الأخرى سيتم إكمالها...
-    // addCollection, addExpense, addNewCustomer, etc.
 
     // تهيئة الصفحة عند التحميل
     window.onload = init;
