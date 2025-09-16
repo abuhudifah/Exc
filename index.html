@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام التحصيل المتطور - شركة أبو حذيفة</title>
+    <title>نظام التقارير المتطور - شركة أبو حذيفة</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -18,20 +20,23 @@
             --dark-text: #2c3e50;
             --light-text: #ecf0f1;
             --border-color: #ddd;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
         }
         
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: var(--light-bg);
+            background-color: #f0f3f5;
             color: var(--dark-text);
             line-height: 1.6;
             padding: 10px;
+            transition: var(--transition);
         }
         
         .container {
@@ -42,15 +47,17 @@
         }
         
         header {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), #1a2530);
             color: var(--light-text);
             padding: 15px 0;
-            border-radius: 8px 8px 0 0;
+            border-radius: 12px 12px 0 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
         }
         
         .logo-container {
@@ -61,13 +68,19 @@
         .logo {
             width: 60px;
             height: 60px;
-            margin-left: 10px;
-            background-color: white;
+            margin-left: 15px;
+            background: white;
             border-radius: 50%;
             padding: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: rotate(10deg);
         }
         
         .logo img {
@@ -81,8 +94,9 @@
         }
         
         .header-text h1 {
-            font-size: 20px;
+            font-size: 22px;
             margin-bottom: 5px;
+            font-weight: 700;
         }
         
         .header-text p {
@@ -90,753 +104,2562 @@
             opacity: 0.9;
         }
         
-        /* أنماط التسجيل */
-        #login-section {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            max-width: 400px;
-            margin: 50px auto;
-            text-align: center;
-        }
-        
-        #login-section h2 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-        
-        #login-section input {
-            margin: 10px 0;
-            padding: 12px;
-            border: 2px solid var(--border-color);
-            border-radius: 5px;
-            width: 100%;
-        }
-        
-        #login-section button {
-            background: var(--accent-green);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            width: 100%;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        
-        /* أنماط لوحة التحكم */
-        .dashboard {
-            display: none;
-        }
-        
-        .section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .section h3 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--secondary-color);
-        }
-        
-        .customer-card, .collection-item {
-            background: var(--light-bg);
-            padding: 15px;
-            border-radius: 6px;
-            margin: 10px 0;
-            border-left: 4px solid var(--accent-blue);
-        }
-        
-        .stats-box {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-blue));
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 10px;
-        }
-        
-        .stats-box h4 {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        
-        .stats-box p {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        /* أزرار */
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            margin: 5px;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary { background: var(--accent-blue); color: white; }
-        .btn-success { background: var(--accent-green); color: white; }
-        .btn-danger { background: var(--secondary-color); color: white; }
-        .btn-warning { background: var(--accent-orange); color: white; }
-        
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        /* Forms */
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid var(--border-color);
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        
-        /* Navigation */
-        .nav-tabs {
+        .tabs {
             display: flex;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
             margin-bottom: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-wrap: wrap;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
         }
         
-        .nav-tab {
-            padding: 15px;
-            flex: 1;
-            text-align: center;
+        .tab {
+            padding: 14px 18px;
             cursor: pointer;
-            background: #f8f9fa;
-            transition: all 0.3s;
+            background: #f1f1f1;
+            transition: var(--transition);
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
         
-        .nav-tab.active {
+        .tab:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: var(--secondary-color);
+            transition: var(--transition);
+        }
+        
+        .tab:hover:after {
+            width: 100%;
+        }
+        
+        .tab.active {
             background: var(--primary-color);
             color: white;
         }
         
         .tab-content {
             display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .tab-content.active {
             display: block;
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-tabs {
-                flex-direction: column;
-            }
-            
-            .stats-container {
-                flex-direction: column;
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        @media (min-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr;
             }
         }
-
+        
+        .input-section, .preview-section, .accounts-section, .debtors-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+        
+        .input-section:hover, .preview-section:hover, .accounts-section:hover, .debtors-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--secondary-color);
+            color: var(--primary-color);
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 80px;
+            height: 2px;
+            background: var(--accent-blue);
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 10px;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-generate {
+            background-color: var(--accent-green);
+        }
+        
+        .btn-generate:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-share {
+            background-color: var(--accent-blue);
+        }
+        
+        .btn-share:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-excel {
+            background-color: #27ae60;
+        }
+        
+        .btn-excel:hover {
+            background-color: #219653;
+        }
+        
+        .btn-transfer {
+            background-color: var(--accent-orange);
+        }
+        
+        .btn-transfer:hover {
+            background-color: #e67e22;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .buttons-container button {
+            margin: 5px;
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .report-preview {
+            background: white;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            min-height: 500px;
+            transition: var(--transition);
+        }
+        
+        .report-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .report-header h2 {
+            color: var(--primary-color);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-item {
+            background: var(--light-bg);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        
+        .summary-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-item h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        .summary-item p {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #edf2f7;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 13px;
+            margin: 0 3px;
+            border-radius: 5px;
+        }
+        
+        .report-footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-style: italic;
+            color: #777;
+            font-size: 14px;
+        }
+        
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px;
-            background: var(--accent-green);
+            padding: 15px 20px;
+            background-color: var(--accent-green);
             color: white;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             z-index: 1000;
+            transition: var(--transition);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .notification.error {
+            background-color: var(--secondary-color);
+        }
+        
+        .accounts-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .account-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .account-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .account-item:last-child {
+            border-bottom: none;
+        }
+        
+        .account-actions button {
+            margin-top: 0;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        
+        .data-management {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .data-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .data-buttons button {
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .saved-reports {
+            margin-top: 20px;
+        }
+        
+        .report-item {
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .report-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-payment, .collector-transfer {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--accent-blue);
+            transition: var(--transition);
+        }
+        
+        .collector-transfer {
+            border-left-color: var(--accent-orange);
+        }
+        
+        .share-options {
             display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            flex-direction: column;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .share-option {
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        
+        .share-option:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .account-limit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .limit-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .limit-normal {
+            background-color: #d5f5e3;
+            color: #27ae60;
+        }
+        
+        .limit-warning {
+            background-color: #fdebd0;
+            color: #e67e22;
+        }
+        
+        .limit-exceeded {
+            background-color: #fadbd8;
+            color: #e74c3c;
+        }
+        
+        .debtors-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .debtor-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            flex-grow: 1;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .debtor-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .debtor-content {
+            display: none;
+        }
+        
+        .debtor-content.active {
+            display: block;
+        }
+        
+        .sync-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .sync-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sync-status {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .header-text h1 {
+                font-size: 18px;
+            }
+            
+            .tab {
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            .report-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+            }
+            
+            .buttons-container button {
+                width: 100%;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.4s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .animated-table {
+            animation: tableAppear 0.6s ease-out;
+        }
+        
+        @keyframes tableAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .debtor-row {
+            transition: all 0.3s ease;
+        }
+        
+        .debtor-row:hover {
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-overdue {
+            background-color: #ffebee;
+            color: #e53935;
+        }
+        
+        .status-warning {
+            background-color: #fff8e1;
+            color: #ffa000;
+        }
+        
+        .status-normal {
+            background-color: #e8f5e9;
+            color: #43a047;
+        }
+        
+        .sheet-embed-container {
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .sheet-embed-container iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+        
+        .sheet-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .refresh-btn {
+            background-color: var(--accent-blue);
+        }
+        
+        .refresh-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* تحسينات جديدة للحسابات */
+        .account-report {
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            background-color: var(--light-bg);
+        }
+        
+        .account-summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .account-summary-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .account-summary-item h4 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        .account-summary-item p {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .account-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .account-details-table th {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+        
+        .account-report-btn {
+            margin-top: 15px;
+            background-color: var(--accent-orange);
+        }
+        
+        .account-report-btn:hover {
+            background-color: #e67e22;
+        }
+        
+        .account-link {
+            color: var(--accent-blue);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .account-link:hover {
+            color: #2980b9;
+        }
+        
+        .debtor-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ddd;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- شاشة التسجيل -->
-        <div id="login-section">
+        <header>
             <div class="logo-container">
                 <div class="logo">
-                    <i class="fas fa-chart-line fa-2x" style="color: var(--primary-color);"></i>
+                    <img src="https://i.ibb.co/whLbwk4s/20250730-012920.png" alt="شعار شركة أبو حذيفة">
                 </div>
                 <div class="header-text">
                     <h1>شركة أبو حذيفة</h1>
-                    <p>نظام التحصيل المتطور</p>
+                    <p>نظام إدارة تقارير التحصيل والإيداع المتطور</p>
                 </div>
             </div>
-            
-            <h2>تسجيل الدخول</h2>
-            <input type="text" id="login-username" placeholder="اسم المستخدم">
-            <input type="password" id="login-password" placeholder="كلمة المرور">
-            <button onclick="handleLogin()">دخول إلى النظام</button>
-            
-            <div id="login-message" style="color: red; margin-top: 10px; display: none;"></div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="input">إدخال البيانات</div>
+            <div class="tab" data-tab="accounts">إدارة الحسابات</div>
+            <div class="tab" data-tab="reports">التقارير المحفوظة</div>
+            <div class="tab" data-tab="debtors">العملاء المديونين</div>
         </div>
 
-        <!-- لوحة تحكم المندوب -->
-        <div id="collector-dashboard" class="dashboard">
-            <header>
-                <div class="logo-container">
-                    <div class="logo">
-                        <i class="fas fa-user-tie fa-2x" style="color: var(--primary-color);"></i>
-                    </div>
-                    <div class="header-text">
-                        <h1>مرحباً <span id="collector-name"></span></h1>
-                        <p>لوحة تحكم المندوب</p>
-                    </div>
-                </div>
-                <button class="btn btn-danger" onclick="logout()">تسجيل الخروج</button>
-            </header>
-
-            <div class="nav-tabs">
-                <div class="nav-tab active" data-tab="customers">العملاء</div>
-                <div class="nav-tab" data-tab="collections">التحصيلات</div>
-                <div class="nav-tab" data-tab="expenses">المصروفات</div>
-                <div class="nav-tab" data-tab="reports">التقارير</div>
-            </div>
-
-            <div class="tab-content active" id="customers-tab">
-                <div class="section">
-                    <h3>العملاء المستحقين للتحصيل</h3>
-                    <div id="customers-list"></div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="collections-tab">
-                <div class="section">
-                    <h3>إضافة تحصيل جديد</h3>
+        <div class="tab-content active" id="input-tab">
+            <div class="main-content">
+                <div class="input-section">
+                    <h2 class="section-title">إدخال البيانات</h2>
+                    
                     <div class="form-group">
-                        <label>اختر العميل:</label>
-                        <select id="collection-customer"></select>
+                        <label for="collector-name">اسم المندوب:</label>
+                        <input type="text" id="collector-name" placeholder="أدخل اسم المندوب">
                     </div>
+                    
                     <div class="form-group">
-                        <label>المبلغ:</label>
-                        <input type="number" id="collection-amount" placeholder="المبلغ المحصل">
+                        <label for="report-date">تاريخ التقرير:</label>
+                        <input type="date" id="report-date">
                     </div>
+                    
+                    <h3 style="margin: 20px 0 15px; color: var(--primary-color);">بيانات التحصيل</h3>
+                    
                     <div class="form-group">
-                        <label>نوع التحصيل:</label>
+                        <label for="collection-type">نوع التحصيل:</label>
                         <select id="collection-type">
                             <option value="نقدي">نقدي</option>
                             <option value="تحويل">تحويل</option>
-                            <option value="بطاقة">بطاقة</option>
+                            <option value="سحب من البطاقة">سحب من البطاقة</option>
                         </select>
                     </div>
-                    <button class="btn btn-success" onclick="addCollection()">إضافة تحصيل</button>
-                </div>
-
-                <div class="section">
-                    <h3>تحصيلاتي اليوم</h3>
-                    <div id="collections-list"></div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="expenses-tab">
-                <div class="section">
-                    <h3>إضافة مصروف جديد</h3>
+                    
                     <div class="form-group">
-                        <label>نوع المصروف:</label>
+                        <label for="client-name">اسم العميل:</label>
+                        <input type="text" id="client-name" placeholder="أدخل اسم العميل">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="collection-amount">مبلغ التحصيل (ريال):</label>
+                        <input type="number" id="collection-amount" placeholder="أدخل المبلغ المحصل">
+                    </div>
+                    
+                    <div id="card-payment-section" class="card-payment" style="display: none;">
+                        <div class="form-group">
+                            <label for="card-owner">صاحب البطاقة:</label>
+                            <input type="text" id="card-owner" placeholder="أدخل اسم صاحب البطاقة">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="card-last-digits">آخر 4 أرقام من البطاقة:</label>
+                            <input type="text" id="card-last-digits" placeholder="أدخل آخر 4 أرقام" maxlength="4">
+                        </div>
+                    </div>
+                    
+                    <button id="add-collection">إضافة تحصيل</button>
+                    <button id="share-collection" class="btn-share" style="display: none;">مشاركة التفاصيل</button>
+                    
+                    <h3 style="margin: 25px 0 15px; color: var(--primary-color);">بيانات الإيداع</h3>
+                    
+                    <div class="form-group">
+                        <label for="deposit-name">اسم المستفيد:</label>
+                        <select id="deposit-name">
+                            <option value="">اختر حساب الإيداع</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="deposit-amount">مبلغ الإيداع (ريال):</label>
+                        <input type="number" id="deposit-amount" placeholder="أدخل مبلغ الإيداع">
+                    </div>
+                    
+                    <button id="add-deposit">إضافة إيداع</button>
+                    <button id="share-deposit" class="btn-share" style="display: none;">مشاركة التفاصيل</button>
+                    
+                    <h3 style="margin: 25px 0 15px; color: var(--primary-color);">المصروفات والنثريات</h3>
+                    
+                    <div class="form-group">
+                        <label for="expense-type">نوع المصروف:</label>
                         <select id="expense-type">
                             <option value="مصاريف للبيت">مصاريف للبيت</option>
                             <option value="نثريات">نثريات</option>
-                            <option value="مواصلات">مواصلات</option>
+                            <option value="تسليم إلى مندوب">تسليم إلى مندوب</option>
                             <option value="أخرى">أخرى</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>المبلغ:</label>
-                        <input type="number" id="expense-amount" placeholder="مبلغ المصروف">
+                    
+                    <div id="collector-transfer-section" class="collector-transfer" style="display: none;">
+                        <div class="form-group">
+                            <label id="collector-transfer-label">اسم المندوب:</label>
+                            <input type="text" id="collector-name-transfer" placeholder="أدخل اسم المندوب">
+                        </div>
                     </div>
+                    
                     <div class="form-group">
-                        <label>التفاصيل:</label>
-                        <textarea id="expense-details" placeholder="تفاصيل المصروف"></textarea>
+                        <label for="expense-amount">المبلغ (ريال):</label>
+                        <input type="number" id="expense-amount" placeholder="أدخل مبلغ المصروف">
                     </div>
-                    <button class="btn btn-warning" onclick="addExpense()">إضافة مصروف</button>
+                    
+                    <div class="form-group">
+                        <label for="expense-details">تفاصيل إضافية (اختياري):</label>
+                        <textarea id="expense-details" rows="2" placeholder="أضف أي تفاصيل إضافية"></textarea>
+                    </div>
+                    
+                    <button id="add-expense">إضافة مصروف</button>
+                    <button id="share-expense" class="btn-share" style="display: none;">مشاركة التفاصيل</button>
+
+                    <div class="data-management">
+                        <h3 style="margin: 25px 0 15px; color: var(--primary-color);">إدارة البيانات</h3>
+                        <div class="data-buttons">
+                            <button id="save-report">حفظ التقرير</button>
+                            <button id="clear-data">مسح الكل</button>
+                            <button id="load-last">تحميل آخر بيانات</button>
+                            <button id="auto-save" class="btn-generate">تفعيل الحفظ التلقائي</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h2 class="section-title">معاينة التقرير</h2>
+                    
+                    <div class="report-preview" id="report-preview">
+                        <div class="report-header">
+                            <h2>تقرير التحصيل والإيداع اليومي</h2>
+                            <p>شركة أبو حذيفة</p>
+                            <p id="preview-date">التاريخ: -</p>
+                            <p id="preview-collector">اسم المندوب: -</p>
+                        </div>
+                        
+                        <div class="report-summary">
+                            <div class="summary-item">
+                                <h3>إجمالي التحصيلات</h3>
+                                <p id="total-collection">0 ريال</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>إجمالي الإيداعات</h3>
+                                <p id="total-deposit">0 ريال</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>إجمالي المصروفات</h3>
+                                <p id="total-expense">0 ريال</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>المبلغ المتبقي</h3>
+                                <p id="remaining-amount">0 ريال</p>
+                            </div>
+                        </div>
+                        
+                        <h3>تفاصيل التحصيلات</h3>
+                        <table id="collections-table">
+                            <thead>
+                                <tr>
+                                    <th>العميل/النوع</th>
+                                    <th>المبلغ (ريال)</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                        
+                        <h3>تفاصيل الإيداعات</h3>
+                        <table id="deposits-table">
+                            <thead>
+                                <tr>
+                                    <th>المستفيد</th>
+                                    <th>المبلغ (ريال)</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                        
+                        <h3>تفاصيل المصروفات</h3>
+                        <table id="expenses-table">
+                            <thead>
+                                <tr>
+                                    <th>النوع</th>
+                                    <th>المبلغ (ريال)</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                        
+                        <div class="report-footer">
+                            <p>تم إنشاء هذا التقرير تلقائياً بواسطة نظام التقارير الإلكتروني لشركة أبو حذيفة</p>
+                        </div>
+                    </div>
+                    
+                    <div class="buttons-container">
+                        <button id="generate-report" class="btn-generate">توليد التقرير</button>
+                        <div style="position: relative;">
+                            <button id="share-pdf" class="btn-share">مشاركة PDF</button>
+                            <div id="pdf-share-options" class="share-options">
+                                <div class="share-option" onclick="downloadPdf()">
+                                    <i class="fas fa-download"></i> تحميل PDF
+                                </div>
+                                <div class="share-option" onclick="shareViaEmail('pdf')">
+                                    <i class="fas fa-envelope"></i> مشاركة عبر البريد
+                                </div>
+                                <div class="share-option" onclick="shareViaWhatsApp('pdf')">
+                                    <i class="fab fa-whatsapp"></i> مشاركة عبر واتساب
+                                </div>
+                            </div>
+                        </div>
+                        <div style="position: relative;">
+                            <button id="share-excel" class="btn-excel">مشاركة Excel</button>
+                            <div id="excel-share-options" class="share-options">
+                                <div class="share-option" onclick="downloadExcel()">
+                                    <i class="fas fa-download"></i> تحميل Excel
+                                </div>
+                                <div class="share-option" onclick="shareViaEmail('excel')">
+                                    <i class="fas fa-envelope"></i> مشاركة عبر البريد
+                                </div>
+                                <div class="share-option" onclick="shareViaWhatsApp('excel')">
+                                    <i class="fab fa-whatsapp"></i> مشاركة عبر واتساب
+                                </div>
+                            </div>
+                        </div>
+                        <button id="share-total" class="btn-transfer">مشاركة الإجمالي</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- لوحة تحكم الإدارة -->
-        <div id="admin-dashboard" class="dashboard">
-            <header>
-                <div class="logo-container">
-                    <div class="logo">
-                        <i class="fas fa-crown fa-2x" style="color: var(--primary-color);"></i>
-                    </div>
-                    <div class="header-text">
-                        <h1>مرحباً <span id="admin-name"></span></h1>
-                        <p>لوحة تحكم الإدارة</p>
-                    </div>
+        <div class="tab-content" id="accounts-tab">
+            <div class="accounts-section">
+                <h2 class="section-title">إدارة حسابات الإيداع</h2>
+                
+                <div class="form-group">
+                    <label for="new-account-name">اسم الحساب الجديد:</label>
+                    <input type="text" id="new-account-name" placeholder="أدخل اسم الحساب">
                 </div>
-                <button class="btn btn-danger" onclick="logout()">تسجيل الخروج</button>
-            </header>
+                
+                <div class="form-group">
+                    <label for="new-account-number">رقم الحساب (اختياري):</label>
+                    <input type="text" id="new-account-number" placeholder="أدخل رقم الحساب">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-account-limit">سقف الحساب (ريال) (اختياري):</label>
+                    <input type="number" id="new-account-limit" placeholder="أدخل السقف المالي للحساب">
+                </div>
+                
+                <button id="add-account">إضافة حساب</button>
+                
+                <h3 style="margin: 25px 0 15px; color: var(--primary-color);">الحسابات المسجلة</h3>
+                <div class="accounts-list" id="accounts-list">
+                    <!-- سيتم ملؤها بالحسابات -->
+                </div>
 
-            <div class="nav-tabs">
-                <div class="nav-tab active" data-tab="stats">الإحصائيات</div>
-                <div class="nav-tab" data-tab="manage-customers">إدارة العملاء</div>
-                <div class="nav-tab" data-tab="all-data">جميع البيانات</div>
-                <div class="nav-tab" data-tab="reports">التقارير</div>
-            </div>
-
-            <div class="tab-content active" id="stats-tab">
-                <div class="section">
-                    <h3>إحصائيات اليوم</h3>
-                    <div id="stats-container" style="display: flex; flex-wrap: wrap;">
-                        <div class="stats-box">
-                            <h4>إجمالي التحصيلات</h4>
-                            <p id="total-collections">0 ريال</p>
-                        </div>
-                        <div class="stats-box">
-                            <h4>إجمالي المصروفات</h4>
-                            <p id="total-expenses">0 ريال</p>
-                        </div>
-                        <div class="stats-box">
-                            <h4>صافي اليوم</h4>
-                            <p id="net-amount">0 ريال</p>
-                        </div>
-                        <div class="stats-box">
-                            <h4>عدد العملاء</h4>
-                            <p id="total-customers">0</p>
-                        </div>
+                <!-- تقارير الحسابات التفصيلية -->
+                <div id="account-reports-container" style="margin-top: 30px;">
+                    <h3 style="margin: 25px 0 15px; color: var(--primary-color);">تقارير الحسابات</h3>
+                    <div id="account-reports">
+                        <!-- سيتم ملؤها بتقارير الحسابات -->
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="tab-content" id="manage-customers-tab">
-                <div class="section">
-                    <h3>إضافة عميل جديد</h3>
-                    <div class="form-group">
-                        <label>اسم العميل:</label>
-                        <input type="text" id="new-customer-name" placeholder="اسم العميل">
-                    </div>
-                    <div class="form-group">
-                        <label>المبلغ المستحق:</label>
-                        <input type="number" id="new-customer-amount" placeholder="المبلغ المستحق">
-                    </div>
-                    <div class="form-group">
-                        <label>العنوان:</label>
-                        <input type="text" id="new-customer-address" placeholder="عنوان العميل">
-                    </div>
-                    <div class="form-group">
-                        <label>المندوب المسؤول:</label>
-                        <select id="new-customer-collector"></select>
-                    </div>
-                    <button class="btn btn-success" onclick="addNewCustomer()">إضافة عميل</button>
+        <div class="tab-content" id="reports-tab">
+            <div class="saved-reports">
+                <h2 class="section-title">التقارير المحفوظة</h2>
+                <div class="form-group">
+                    <input type="text" id="search-reports" placeholder="ابحث في التقارير المحفوظة...">
                 </div>
+                <div id="saved-reports-list">
+                    <!-- سيتم ملؤها بالتقرير المحفوظة -->
+                </div>
+            </div>
+        </div>
 
-                <div class="section">
-                    <h3>جميع العملاء</h3>
-                    <div id="all-customers-list"></div>
+        <div class="tab-content" id="debtors-tab">
+            <div class="debtors-section">
+                <h2 class="section-title">العملاء المديونين</h2>
+                
+                <div class="sync-section">
+                    <div class="sync-info">
+                        <span class="sync-status" id="sync-status">آخر مزامنة: -</span>
+                    </div>
+                    <button id="sync-now" class="btn-generate">مزامنة الآن</button>
+                </div>
+                
+                <div class="debtors-tabs">
+                    <div class="debtor-tab active" data-debtor-tab="khamis">خميس مشيط</div>
+                    <div class="debtor-tab" data-debtor-tab="dharan">ظهران الجنوب</div>
+                    <div class="debtor-tab" data-debtor-tab="other">مناطق أخرى</div>
+                </div>
+                
+                <div class="debtor-content active" id="khamis-content">
+                    <div class="debtor-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>اسم العميل</th>
+                                    <th>المبلغ المتبقي</th>
+                                    <th>آخر تاريخ دفع</th>
+                                    <th>الحالة</th>
+                                    <th>ملاحظات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="khamis-table-body">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="debtor-content" id="dharan-content">
+                    <div class="debtor-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>اسم العميل</th>
+                                    <th>المبلغ المتبقي</th>
+                                    <th>آخر تاريخ دفع</th>
+                                    <th>الحالة</th>
+                                    <th>ملاحظات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dharan-table-body">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="debtor-content" id="other-content">
+                    <div class="debtor-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>اسم العميل</th>
+                                    <th>المبلغ المتبقي</th>
+                                    <th>آخر تاريخ دفع</th>
+                                    <th>الحالة</th>
+                                    <th>ملاحظات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="other-table-body">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="notification" class="notification"></div>
-
     <script>
-    // بيانات المستخدمين الثابتة (بدلاً من الاتصال بـ Google Sheets)
-    const USERS_DATA = [
-        { id: 1, username: "المدير", password: "777714014", role: "admin", name: "مدير النظام", phone: "777714014", status: "active" },
-        { id: 2, username: "مالك", password: "775672439", role: "collector", name: "مالك الوصابي", phone: "775672439", status: "active" },
-        { id: 3, username: "شمسان", password: "11223344", role: "collector", name: "شمسان محمد", phone: "11223344", status: "active" },
-        { id: 4, username: "علاء", password: "132435", role: "collector", name: "علاء المعلمي", phone: "132435", status: "active" },
-        { id: 5, username: "المنذر", password: "11335577", role: "collector", name: "المنذر", phone: "11335577", status: "active" }
-    ];
-
-    // بيانات تجريبية للعملاء
-    const CUSTOMERS_DATA = [
-        { id: 1, name: "أحمد علي", amount: "150000", address: "صنعاء - التعاون", collector_id: "2", status: "pending", due_date: "2024-02-15", created_at: "2024-01-25" },
-        { id: 2, name: "محمد حسين", amount: "75000", address: "صنعاء - حدة", collector_id: "3", status: "pending", due_date: "2024-02-20", created_at: "2024-01-25" },
-        { id: 3, name: "علي أحمد", amount: "200000", address: "صنعاء - أزال", collector_id: "4", status: "pending", due_date: "2024-02-25", created_at: "2024-01-25" }
-    ];
-
-    // بيانات تجريبية أخرى
-    let COLLECTIONS_DATA = [];
-    let EXPENSES_DATA = [];
-    let ACCOUNTS_DATA = [];
-
-    // بيانات المستخدم الحالي
-    let currentUser = null;
-
-    // تهيئة الصفحة
-    function init() {
-        checkLoginStatus();
-        setupEventListeners();
-        loadFromLocalStorage();
-    }
-
-    // التحقق من حالة التسجيل
-    function checkLoginStatus() {
-        const savedUser = localStorage.getItem('currentUser');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
-            showDashboard();
-        }
-    }
-
-    // تحميل البيانات من localStorage
-    function loadFromLocalStorage() {
-        const savedCollections = localStorage.getItem('collections');
-        const savedExpenses = localStorage.getItem('expenses');
-        const savedAccounts = localStorage.getItem('accounts');
-
-        if (savedCollections) COLLECTIONS_DATA = JSON.parse(savedCollections);
-        if (savedExpenses) EXPENSES_DATA = JSON.parse(savedExpenses);
-        if (savedAccounts) ACCOUNTS_DATA = JSON.parse(savedAccounts);
-    }
-
-    // حفظ البيانات إلى localStorage
-    function saveToLocalStorage() {
-        localStorage.setItem('collections', JSON.stringify(COLLECTIONS_DATA));
-        localStorage.setItem('expenses', JSON.stringify(EXPENSES_DATA));
-        localStorage.setItem('accounts', JSON.stringify(ACCOUNTS_DATA));
-    }
-
-    // تسجيل الدخول
-    function handleLogin() {
-        const username = document.getElementById('login-username').value;
-        const password = document.getElementById('login-password').value;
-
-        if (!username || !password) {
-            showMessage('يرجى إدخال اسم المستخدم وكلمة المرور', 'error');
-            return;
-        }
-
-        const user = USERS_DATA.find(u => u.username === username && u.password === password);
-
-        if (user) {
-            currentUser = user;
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            showDashboard();
-            showMessage('تم تسجيل الدخول بنجاح!', 'success');
-        } else {
-            showMessage('اسم المستخدم أو كلمة المرور غير صحيح', 'error');
-        }
-    }
-
-    // عرض الرسائل
-    function showMessage(message, type = 'success') {
-        const messageDiv = document.getElementById('login-message');
-        const notification = document.getElementById('notification');
-        
-        messageDiv.textContent = message;
-        messageDiv.style.display = 'block';
-        messageDiv.style.color = type === 'error' ? 'red' : 'green';
-        
-        notification.textContent = message;
-        notification.style.display = 'block';
-        notification.style.background = type === 'error' ? 'var(--secondary-color)' : 'var(--accent-green)';
-        
-        setTimeout(() => {
-            messageDiv.style.display = 'none';
-            notification.style.display = 'none';
-        }, 3000);
-    }
-
-    // عرض لوحة التحكم المناسبة
-    function showDashboard() {
-        document.getElementById('login-section').style.display = 'none';
-        
-        if (currentUser.role === 'admin') {
-            document.getElementById('admin-dashboard').style.display = 'block';
-            document.getElementById('admin-name').textContent = currentUser.name;
-            loadAdminData();
-        } else {
-            document.getElementById('collector-dashboard').style.display = 'block';
-            document.getElementById('collector-name').textContent = currentUser.name;
-            loadCollectorData();
-        }
-    }
-
-    // تسجيل الخروج
-    function logout() {
-        localStorage.removeItem('currentUser');
-        currentUser = null;
-        document.getElementById('login-section').style.display = 'block';
-        document.getElementById('admin-dashboard').style.display = 'none';
-        document.getElementById('collector-dashboard').style.display = 'none';
-        document.getElementById('login-username').value = '';
-        document.getElementById('login-password').value = '';
-    }
-
-    // تحميل بيانات المندوب
-    function loadCollectorData() {
-        const myCustomers = CUSTOMERS_DATA.filter(c => c.collector_id == currentUser.id && c.status === 'pending');
-        const myCollections = COLLECTIONS_DATA.filter(c => c.collector_id == currentUser.id);
-        
-        displayCustomers(myCustomers);
-        populateCustomerDropdown(myCustomers);
-        displayCollections(myCollections);
-    }
-
-    // تحميل بيانات الإدارة
-    function loadAdminData() {
-        displayStats(COLLECTIONS_DATA, EXPENSES_DATA, CUSTOMERS_DATA);
-        displayAllCustomers(CUSTOMERS_DATA);
-        populateCollectorsDropdown();
-    }
-
-    // عرض العملاء للمندوب
-    function displayCustomers(customers) {
-        const container = document.getElementById('customers-list');
-        container.innerHTML = '';
-
-        if (customers.length === 0) {
-            container.innerHTML = '<p>لا توجد عملاء مستحقين للتحصيل</p>';
-            return;
-        }
-
-        customers.forEach(customer => {
-            container.innerHTML += `
-                <div class="customer-card">
-                    <h4>${customer.name}</h4>
-                    <p>المبلغ: ${Number(customer.amount).toLocaleString()} ريال</p>
-                    <p>العنوان: ${customer.address}</p>
-                    <p>تاريخ الاستحقاق: ${customer.due_date}</p>
-                </div>
-            `;
-        });
-    }
-
-    // تعبئة dropdown العملاء
-    function populateCustomerDropdown(customers) {
-        const dropdown = document.getElementById('collection-customer');
-        dropdown.innerHTML = '';
-        
-        customers.forEach(customer => {
-            const option = document.createElement('option');
-            option.value = customer.id;
-            option.textContent = `${customer.name} - ${customer.amount} ريال`;
-            dropdown.appendChild(option);
-        });
-    }
-
-    // تعبئة dropdown المندوبين
-    function populateCollectorsDropdown() {
-        const dropdown = document.getElementById('new-customer-collector');
-        dropdown.innerHTML = '';
-        
-        USERS_DATA.filter(user => user.role === 'collector').forEach(collector => {
-            const option = document.createElement('option');
-            option.value = collector.id;
-            option.textContent = collector.name;
-            dropdown.appendChild(option);
-        });
-    }
-
-    // عرض التحصيلات
-    function displayCollections(collections) {
-        const container = document.getElementById('collections-list');
-        container.innerHTML = '';
-
-        if (collections.length === 0) {
-            container.innerHTML = '<p>لا توجد تحصيلات اليوم</p>';
-            return;
-        }
-
-        const today = new Date().toISOString().split('T')[0];
-        const todayCollections = collections.filter(c => c.date === today);
-
-        todayCollections.forEach(collection => {
-            container.innerHTML += `
-                <div class="collection-item">
-                    <h4>${collection.client_name}</h4>
-                    <p>المبلغ: ${Number(collection.amount).toLocaleString()} ريال</p>
-                    <p>النوع: ${collection.type}</p>
-                    <p>التاريخ: ${collection.date}</p>
-                </div>
-            `;
-        });
-    }
-
-    // عرض الإحصائيات للإدارة
-    function displayStats(collections, expenses, customers) {
-        const today = new Date().toISOString().split('T')[0];
-        
-        const todayCollections = collections.filter(c => c.date === today);
-        const todayExpenses = expenses.filter(e => e.date === today);
-
-        const totalCollections = todayCollections.reduce((sum, c) => sum + Number(c.amount), 0);
-        const totalExpenses = todayExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
-        const netAmount = totalCollections - totalExpenses;
-
-        document.getElementById('total-collections').textContent = totalCollections.toLocaleString() + ' ريال';
-        document.getElementById('total-expenses').textContent = totalExpenses.toLocaleString() + ' ريال';
-        document.getElementById('net-amount').textContent = netAmount.toLocaleString() + ' ريال';
-        document.getElementById('total-customers').textContent = customers.length;
-    }
-
-    // عرض جميع العملاء للإدارة
-    function displayAllCustomers(customers) {
-        const container = document.getElementById('all-customers-list');
-        container.innerHTML = '';
-
-        customers.forEach(customer => {
-            const collector = USERS_DATA.find(u => u.id == customer.collector_id);
-            container.innerHTML += `
-                <div class="customer-card">
-                    <h4>${customer.name}</h4>
-                    <p>المبلغ: ${Number(customer.amount).toLocaleString()} ريال</p>
-                    <p>العنوان: ${customer.address}</p>
-                    <p>المندوب: ${collector ? collector.name : 'غير معين'}</p>
-                    <p>الحالة: ${customer.status}</p>
-                </div>
-            `;
-        });
-    }
-
-    // إضافة تحصيل جديد
-    function addCollection() {
-        const customerId = document.getElementById('collection-customer').value;
-        const amount = document.getElementById('collection-amount').value;
-        const type = document.getElementById('collection-type').value;
-
-        if (!customerId || !amount || amount <= 0) {
-            showMessage('يرجى إدخال البيانات بشكل صحيح', 'error');
-            return;
-        }
-
-        const customer = CUSTOMERS_DATA.find(c => c.id == customerId);
-        const today = new Date().toISOString().split('T')[0];
-
-        const newCollection = {
-            id: COLLECTIONS_DATA.length + 1,
-            collector_id: currentUser.id,
-            client_name: customer.name,
-            amount: amount,
-            type: type,
-            date: today,
-            created_at: new Date().toISOString()
+        // بيانات التقرير
+        let reportData = {
+            collectorName: '',
+            reportDate: '',
+            collections: [],
+            deposits: [],
+            expenses: []
         };
 
-        COLLECTIONS_DATA.push(newCollection);
-        saveToLocalStorage();
-
-        document.getElementById('collection-amount').value = '';
-        showMessage('تم إضافة التحصيل بنجاح', 'success');
-        displayCollections(COLLECTIONS_DATA);
-    }
-
-    // إضافة مصروف جديد
-    function addExpense() {
-        const type = document.getElementById('expense-type').value;
-        const amount = document.getElementById('expense-amount').value;
-        const details = document.getElementById('expense-details').value;
-
-        if (!amount || amount <= 0) {
-            showMessage('يرجى إدخال المبلغ بشكل صحيح', 'error');
-            return;
-        }
-
-        const today = new Date().toISOString().split('T')[0];
-
-        const newExpense = {
-            id: EXPENSES_DATA.length + 1,
-            collector_id: currentUser.id,
-            type: type,
-            amount: amount,
-            details: details || 'لا يوجد',
-            date: today,
-            created_at: new Date().toISOString()
+        // بيانات الحسابات
+        let accounts = [];
+        let autoSaveEnabled = false;
+        let autoSaveInterval;
+        
+        // بيانات العملاء المديونين
+        let debtorsData = {
+            khamis: [],
+            dharan: [],
+            other: [],
+            lastSync: null
         };
 
-        EXPENSES_DATA.push(newExpense);
-        saveToLocalStorage();
+        // عناصر DOM
+        const collectorNameInput = document.getElementById('collector-name');
+        const reportDateInput = document.getElementById('report-date');
+        const collectionTypeInput = document.getElementById('collection-type');
+        const clientNameInput = document.getElementById('client-name');
+        const collectionAmountInput = document.getElementById('collection-amount');
+        const cardPaymentSection = document.getElementById('card-payment-section');
+        const cardOwnerInput = document.getElementById('card-owner');
+        const cardLastDigitsInput = document.getElementById('card-last-digits');
+        const depositNameInput = document.getElementById('deposit-name');
+        const depositAmountInput = document.getElementById('deposit-amount');
+        const expenseTypeInput = document.getElementById('expense-type');
+        const collectorTransferSection = document.getElementById('collector-transfer-section');
+        const collectorTransferLabel = document.getElementById('collector-transfer-label');
+        const collectorNameTransferInput = document.getElementById('collector-name-transfer');
+        const expenseAmountInput = document.getElementById('expense-amount');
+        const expenseDetailsInput = document.getElementById('expense-details');
+        const newAccountNameInput = document.getElementById('new-account-name');
+        const newAccountNumberInput = document.getElementById('new-account-number');
+        const newAccountLimitInput = document.getElementById('new-account-limit');
+        const searchReportsInput = document.getElementById('search-reports');
+        const syncNowBtn = document.getElementById('sync-now');
+        const syncStatusElem = document.getElementById('sync-status');
+        const accountReportsContainer = document.getElementById('account-reports');
+        
+        // أزرار المشاركة
+        const shareCollectionBtn = document.getElementById('share-collection');
+        const shareDepositBtn = document.getElementById('share-deposit');
+        const shareExpenseBtn = document.getElementById('share-expense');
+        const shareTotalBtn = document.getElementById('share-total');
+        
+        // عناصر المعاينة
+        const previewDate = document.getElementById('preview-date');
+        const previewCollector = document.getElementById('preview-collector');
+        const totalCollectionElem = document.getElementById('total-collection');
+        const totalDepositElem = document.getElementById('total-deposit');
+        const totalExpenseElem = document.getElementById('total-expense');
+        const remainingAmountElem = document.getElementById('remaining-amount');
+        const collectionsTableBody = document.querySelector('#collections-table tbody');
+        const depositsTableBody = document.querySelector('#deposits-table tbody');
+        const expensesTableBody = document.querySelector('#expenses-table tbody');
+        const accountsList = document.getElementById('accounts-list');
+        const savedReportsList = document.getElementById('saved-reports-list');
+        
+        // جداول العملاء المديونين
+        const khamisTableBody = document.getElementById('khamis-table-body');
+        const dharanTableBody = document.getElementById('dharan-table-body');
+        const otherTableBody = document.getElementById('other-table-body');
+        
+        // الأزرار
+        const addCollectionBtn = document.getElementById('add-collection');
+        const addDepositBtn = document.getElementById('add-deposit');
+        const addExpenseBtn = document.getElementById('add-expense');
+        const addAccountBtn = document.getElementById('add-account');
+        const generateReportBtn = document.getElementById('generate-report');
+        const sharePdfBtn = document.getElementById('share-pdf');
+        const shareExcelBtn = document.getElementById('share-excel');
+        const saveReportBtn = document.getElementById('save-report');
+        const clearDataBtn = document.getElementById('clear-data');
+        const loadLastBtn = document.getElementById('load-last');
+        const autoSaveBtn = document.getElementById('auto-save');
+        
+        // خيارات المشاركة
+        const pdfShareOptions = document.getElementById('pdf-share-options');
+        const excelShareOptions = document.getElementById('excel-share-options');
+        
+        // التبويبات
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const debtorTabs = document.querySelectorAll('.debtor-tab');
+        const debtorContents = document.querySelectorAll('.debtor-content');
 
-        document.getElementById('expense-amount').value = '';
-        document.getElementById('expense-details').value = '';
-        showMessage('تم إضافة المصروف بنجاح', 'success');
-    }
-
-    // إضافة عميل جديد
-    function addNewCustomer() {
-        const name = document.getElementById('new-customer-name').value;
-        const amount = document.getElementById('new-customer-amount').value;
-        const address = document.getElementById('new-customer-address').value;
-        const collectorId = document.getElementById('new-customer-collector').value;
-
-        if (!name || !amount || !address || !collectorId) {
-            showMessage('يرجى إدخال جميع البيانات', 'error');
-            return;
-        }
-
-        const newCustomer = {
-            id: CUSTOMERS_DATA.length + 1,
-            name: name,
-            amount: amount,
-            address: address,
-            collector_id: collectorId,
-            status: 'pending',
-            due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // بعد 30 يوم
-            created_at: new Date().toISOString().split('T')[0]
-        };
-
-        CUSTOMERS_DATA.push(newCustomer);
-        showMessage('تم إضافة العميل بنجاح', 'success');
-
-        // مسح الحقول
-        document.getElementById('new-customer-name').value = '';
-        document.getElementById('new-customer-amount').value = '';
-        document.getElementById('new-customer-address').value = '';
-
-        // تحديث العرض
-        displayAllCustomers(CUSTOMERS_DATA);
-    }
-
-    // إعداد مستمعي الأحداث
-    function setupEventListeners() {
-        // التنقل بين التبويبات
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabName = tab.getAttribute('data-tab');
-                activateTab(tabName);
-            });
-        });
-
-        // إدخال البيانات
-        document.getElementById('login-password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleLogin();
+        // تهيئة الصفحة
+        function init() {
+            // تعيين تاريخ اليوم كتاريخ افتراضي
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            reportDateInput.value = formattedDate;
+            reportData.reportDate = formattedDate;
+            
+            // تحميل البيانات من localStorage
+            loadDataFromStorage();
+            
+            // تحديث واجهة المستخدم
+            updateAccountsDropdown();
+            updateAccountsList();
+            updateSavedReportsList();
+            updatePreview();
+            updateDebtorsTables();
+            
+            // إضافة مستمعي الأحداث
+            setupEventListeners();
+            
+            // تفعيل الحفظ التلقائي إذا كان مفعلًا مسبقًا
+            const autoSaveSetting = localStorage.getItem('autoSaveEnabled');
+            if (autoSaveSetting === 'true') {
+                toggleAutoSave();
             }
-        });
-    }
+            
+            // أرشفة التقرير تلقائيًا في نهاية اليوم
+            checkAutoArchive();
+            
+            // تحميل بيانات العملاء المديونين
+            loadDebtorsData();
+        }
 
-    // تفعيل التبويب
-    function activateTab(tabName) {
-        // إلغاء تفعيل جميع التبويبات
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            // التبويبات الرئيسية
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    activateTab(tabId);
+                });
+            });
+            
+            // تبويبات العملاء المديونين
+            debtorTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const debtorTabId = tab.getAttribute('data-debtor-tab');
+                    activateDebtorTab(debtorTabId);
+                });
+            });
+            
+            // تغيير نوع التحصيل
+            collectionTypeInput.addEventListener('change', function() {
+                if (this.value === 'سحب من البطاقة') {
+                    cardPaymentSection.style.display = 'block';
+                } else {
+                    cardPaymentSection.style.display = 'none';
+                }
+            });
+            
+            // تغيير نوع المصروف
+            expenseTypeInput.addEventListener('change', function() {
+                if (this.value === 'تسليم إلى مندوب') {
+                    collectorTransferSection.style.display = 'block';
+                    collectorTransferLabel.textContent = 'اسم المندوب المستلم:';
+                } else {
+                    collectorTransferSection.style.display = 'none';
+                }
+            });
+            
+            // تحديث المعاينة عند تغيير اسم المندوب أو التاريخ
+            collectorNameInput.addEventListener('input', function() {
+                reportData.collectorName = this.value;
+                updatePreview();
+            });
+            
+            reportDateInput.addEventListener('change', function() {
+                reportData.reportDate = this.value;
+                updatePreview();
+            });
+            
+            // البحث في التقارير المحفوظة
+            searchReportsInput.addEventListener('input', updateSavedReportsList);
+            
+            // إضافة تحصيل
+            addCollectionBtn.addEventListener('click', addCollection);
+            
+            // إضافة إيداع
+            addDepositBtn.addEventListener('click', addDeposit);
+            
+            // إضافة مصروف
+            addExpenseBtn.addEventListener('click', addExpense);
+            
+            // إضافة حساب
+            addAccountBtn.addEventListener('click', addAccount);
+            
+            // توليد التقرير
+            generateReportBtn.addEventListener('click', generateReport);
+            
+            // مشاركة PDF
+            sharePdfBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                pdfShareOptions.style.display = 'flex';
+                excelShareOptions.style.display = 'none';
+            });
+            
+            // مشاركة Excel
+            shareExcelBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                excelShareOptions.style.display = 'flex';
+                pdfShareOptions.style.display = 'none';
+            });
+            
+            // مشاركة التفاصيل
+            shareCollectionBtn.addEventListener('click', () => shareDetails('collection'));
+            shareDepositBtn.addEventListener('click', () => shareDetails('deposit'));
+            shareExpenseBtn.addEventListener('click', () => shareDetails('expense'));
+            shareTotalBtn.addEventListener('click', shareTotalAmount);
+            
+            // إغلاق قوائم المشاركة عند النقر خارجها
+            document.addEventListener('click', function() {
+                pdfShareOptions.style.display = 'none';
+                excelShareOptions.style.display = 'none';
+            });
+            
+            // منع إغلاق القوائم عند النقر عليها
+            pdfShareOptions.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            excelShareOptions.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // حفظ التقرير
+            saveReportBtn.addEventListener('click', saveReport);
+            
+            // مسح البيانات
+            clearDataBtn.addEventListener('click', clearData);
+            
+            // تحميل آخر بيانات
+            loadLastBtn.addEventListener('click', loadLastData);
+            
+            // تفعيل/تعطيل الحفظ التلقائي
+            autoSaveBtn.addEventListener('click', toggleAutoSave);
+            
+            // مزامنة بيانات العملاء المديونين
+            syncNowBtn.addEventListener('click', syncDebtorsData);
+        }
 
-        // تفعيل التبويب المحدد
-        document.querySelector(`.nav-tab[data-tab="${tabName}"]`).classList.add('active');
-        document.getElementById(`${tabName}-tab`).classList.add('active');
-    }
+        // تحميل البيانات من localStorage
+        function loadDataFromStorage() {
+            // تحميل الحسابات
+            const savedAccounts = localStorage.getItem('depositAccounts');
+            if (savedAccounts) {
+                accounts = JSON.parse(savedAccounts);
+            } else {
+                // بيانات افتراضية (الحسابات المطلوبة) مع السقوفات المحددة
+                accounts = [
+                    { name: 'دادية - شركة دروب سيول التعاون', accountNumber: '01400031966804', limit: 1000000 },
+                    { name: 'دادية - شركة ترابط النوادر الأهليه', accountNumber: '50200000522607', limit: 100000 },
+                    { name: 'القاسمي - ALHANOUF S. AL ALQUTB', accountNumber: '01400029026609', limit: 100000 },
+                    { name: 'المقبولي - شركة بكري علي أحمد الشيخي', accountNumber: '25600001040609', limit: 100000 },
+                    { name: 'دادية - تلال الوفاء (زغلول)', accountNumber: '01400032556202', limit: 100000 }
+                ];
+                localStorage.setItem('depositAccounts', JSON.stringify(accounts));
+            }
+            
+            // تحميل آخر تقرير
+            const lastReport = localStorage.getItem('lastReportData');
+            if (lastReport) {
+                reportData = JSON.parse(lastReport);
+                
+                // تعبئة الحقول
+                collectorNameInput.value = reportData.collectorName || '';
+                reportDateInput.value = reportData.reportDate || '';
+            }
+            
+            // تحميل بيانات العملاء المديونين
+            const savedDebtors = localStorage.getItem('debtorsData');
+            if (savedDebtors) {
+                debtorsData = JSON.parse(savedDebtors);
+                
+                if (debtorsData.lastSync) {
+                    const lastSyncDate = new Date(debtorsData.lastSync);
+                    syncStatusElem.textContent = `آخر مزامنة: ${lastSyncDate.toLocaleString('ar-SA')}`;
+                }
+            }
+        }
 
-    // تهيئة الصفحة عند التحميل
-    window.onload = init;
+        // تفعيل تبويب
+        function activateTab(tabId) {
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-tab') === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            tabContents.forEach(content => {
+                if (content.id === `${tabId}-tab`) {
+                    content.classList.add('active');
+                    
+                    // عند تفعيل تبويب التقارير، قم بتحديث القائمة
+                    if (tabId === 'reports') {
+                        updateSavedReportsList();
+                    }
+                    // عند تفعيل تبويب الحسابات، قم بتحديث القائمة
+                    else if (tabId === 'accounts') {
+                        updateAccountsList();
+                    }
+                    // عند تفعيل تبويب العملاء المديونين، قم بتحديث الجداول
+                    else if (tabId === 'debtors') {
+                        updateDebtorsTables();
+                    }
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        // تفعيل تبويب العملاء المديونين
+        function activateDebtorTab(tabId) {
+            debtorTabs.forEach(tab => {
+                if (tab.getAttribute('data-debtor-tab') === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            debtorContents.forEach(content => {
+                if (content.id === `${tabId}-content`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        // تحديث قائمة الحسابات في dropdown
+        function updateAccountsDropdown() {
+            depositNameInput.innerHTML = '<option value="">اختر حساب الإيداع</option>';
+            accounts.forEach(account => {
+                const option = document.createElement('option');
+                option.value = account.name;
+                option.textContent = `${account.name} ${account.accountNumber ? `(${account.accountNumber})` : ''}`;
+                option.setAttribute('data-limit', account.limit || 0);
+                depositNameInput.appendChild(option);
+            });
+        }
+
+        // تحديث قائمة الحسابات المعروضة
+        function updateAccountsList() {
+            accountsList.innerHTML = '';
+            
+            if (accounts.length === 0) {
+                accountsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-university"></i>
+                        <p>لا توجد حسابات مسجلة</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            accounts.forEach((account, index) => {
+                const accountItem = document.createElement('div');
+                accountItem.className = 'account-item fade-in';
+                
+                const limitStatus = getLimitStatus(account.limit, getAccountTotal(account.name));
+                const limitClass = `limit-badge ${limitStatus.class}`;
+                
+                accountItem.innerHTML = `
+                    <div>
+                        <strong><span class="account-link" onclick="showAccountReport('${account.name}', ${index})">${account.name}</span></strong>
+                        ${account.accountNumber ? `<br><small>رقم الحساب: ${account.accountNumber}</small>` : ''}
+                        ${account.limit ? `<div class="account-limit">
+                            <small>السقف: ${account.limit.toLocaleString()} ريال</small>
+                            <span class="${limitClass}">${limitStatus.text}</span>
+                        </div>` : ''}
+                    </div>
+                    <div class="account-actions">
+                        <button onclick="editAccount(${index})">تعديل</button>
+                        <button onclick="deleteAccount(${index})">حذف</button>
+                    </div>
+                `;
+                accountsList.appendChild(accountItem);
+            });
+            
+            // تحديث تقارير الحسابات
+            updateAccountReports();
+        }
+
+        // تحديث تقارير الحسابات
+        function updateAccountReports() {
+            accountReportsContainer.innerHTML = '';
+            
+            accounts.forEach((account, index) => {
+                const accountReport = document.createElement('div');
+                accountReport.className = 'account-report fade-in';
+                
+                const totalDeposits = getAccountTotal(account.name);
+                const remaining = account.limit ? account.limit - totalDeposits : 0;
+                const percentage = account.limit ? (totalDeposits / account.limit) * 100 : 0;
+                
+                accountReport.innerHTML = `
+                    <h3>تقرير حساب: ${account.name}</h3>
+                    <div class="account-summary">
+                        <div class="account-summary-item">
+                            <h4>إجمالي الإيداعات اليوم</h4>
+                            <p>${totalDeposits.toLocaleString()} ريال</p>
+                        </div>
+                        <div class="account-summary-item">
+                            <h4>السقف اليومي</h4>
+                            <p>${account.limit ? account.limit.toLocaleString() + ' ريال' : 'غير محدد'}</p>
+                        </div>
+                        <div class="account-summary-item">
+                            <h4>المتبقي</h4>
+                            <p>${remaining.toLocaleString()} ريال</p>
+                        </div>
+                        <div class="account-summary-item">
+                            <h4>النسبة المئوية</h4>
+                            <p>${percentage.toFixed(2)}%</p>
+                        </div>
+                    </div>
+                    <button class="account-report-btn" onclick="exportAccountReport('${account.name}')">تصدير تقرير الحساب</button>
+                `;
+                
+                accountReportsContainer.appendChild(accountReport);
+            });
+        }
+
+        // تصدير تقرير الحساب
+        function exportAccountReport(accountName) {
+            const account = accounts.find(acc => acc.name === accountName);
+            if (!account) return;
+            
+            const totalDeposits = getAccountTotal(accountName);
+            const remaining = account.limit ? account.limit - totalDeposits : 0;
+            const percentage = account.limit ? (totalDeposits / account.limit) * 100 : 0;
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // إضافة محتوى التقرير
+            doc.setFontSize(18);
+            doc.text(`تقرير حساب: ${accountName}`, 105, 15, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.text(`رقم الحساب: ${account.accountNumber || 'غير محدد'}`, 15, 25);
+            doc.text(`تاريخ التقرير: ${new Date().toLocaleDateString('ar-SA')}`, 15, 35);
+            
+            doc.text(`إجمالي الإيداعات اليوم: ${totalDeposits.toLocaleString()} ريال`, 15, 50);
+            doc.text(`السقف اليومي: ${account.limit ? account.limit.toLocaleString() + ' ريال' : 'غير محدد'}`, 15, 60);
+            doc.text(`المتبقي: ${remaining.toLocaleString()} ريال`, 15, 70);
+            doc.text(`النسبة المئوية: ${percentage.toFixed(2)}%`, 15, 80);
+            
+            // حفظ الملف
+            const fileName = `تقرير_${accountName}_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(fileName);
+            
+            showNotification('تم تصدير تقرير الحساب بنجاح');
+        }
+
+        // عرض تقرير مفصل للحساب
+        function showAccountReport(accountName, index) {
+            const account = accounts[index];
+            const totalDeposits = getAccountTotal(accountName);
+            const remaining = account.limit ? account.limit - totalDeposits : 0;
+            const percentage = account.limit ? (totalDeposits / account.limit) * 100 : 0;
+            
+            const modalContent = `
+                <h2>تقرير مفصل: ${accountName}</h2>
+                <p><strong>رقم الحساب:</strong> ${account.accountNumber || 'غير محدد'}</p>
+                <p><strong>السقف اليومي:</strong> ${account.limit ? account.limit.toLocaleString() + ' ريال' : 'غير محدد'}</p>
+                <p><strong>إجمالي الإيداعات اليوم:</strong> ${totalDeposits.toLocaleString()} ريال</p>
+                <p><strong>المتبقي:</strong> ${remaining.toLocaleString()} ريال</p>
+                <p><strong>النسبة المئوية:</strong> ${percentage.toFixed(2)}%</p>
+                <button onclick="exportAccountReport('${accountName}')">تصدير التقرير</button>
+            `;
+            
+            // إنشاء نافذة منبثقة أو عرض النتائج في قسم مخصص
+            alert(`تقرير حساب ${accountName}\n\nإجمالي الإيداعات: ${totalDeposits.toLocaleString()} ريال\nالسقف: ${account.limit ? account.limit.toLocaleString() : 'غير محدد'} ريال\nالمتبقي: ${remaining.toLocaleString()} ريال`);
+        }
+
+        // الحصول على حالة السقف المالي
+        function getLimitStatus(limit, total) {
+            if (!limit) return { class: '', text: '' };
+            
+            const percentage = (total / limit) * 100;
+            
+            if (percentage >= 90) {
+                return { class: 'limit-exceeded', text: 'تجاوز السقف' };
+            } else if (percentage >= 70) {
+                return { class: 'limit-warning', text: 'قريب من السقف' };
+            } else {
+                return { class: 'limit-normal', text: 'طبيعي' };
+            }
+        }
+
+        // الحصول على إجمالي الإيداعات لحساب معين
+        function getAccountTotal(accountName) {
+            return reportData.deposits
+                .filter(deposit => deposit.depositName === accountName)
+                .reduce((sum, deposit) => sum + deposit.amount, 0);
+        }
+
+        // تحديث قائمة التقارير المحفوظة
+        function updateSavedReportsList() {
+            savedReportsList.innerHTML = '';
+            const reports = getSavedReports();
+            const searchTerm = searchReportsInput.value.toLowerCase();
+            
+            if (reports.length === 0) {
+                savedReportsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-file-alt"></i>
+                        <p>لا توجد تقارير محفوظة</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const filteredReports = reports.filter(report => 
+                report.date.toLowerCase().includes(searchTerm) || 
+                report.collectorName.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filteredReports.length === 0) {
+                savedReportsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p>لا توجد تقارير تطابق البحث</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredReports.forEach((report, index) => {
+                const originalIndex = reports.findIndex(r => 
+                    r.date === report.date && r.collectorName === report.collectorName
+                );
+                
+                const reportItem = document.createElement('div');
+                reportItem.className = 'report-item slide-in';
+                
+                // حساب إجماليات التقرير
+                const totalCollection = report.data.collections.reduce((sum, item) => sum + item.amount, 0);
+                const totalDeposit = report.data.deposits.reduce((sum, item) => sum + item.amount, 0);
+                const totalExpense = report.data.expenses.reduce((sum, item) => sum + item.amount, 0);
+                const remainingAmount = totalCollection - totalDeposit - totalExpense;
+                
+                reportItem.innerHTML = `
+                    <div>
+                        <strong>تقرير ${report.date}</strong>
+                        <br><small>المندوب: ${report.collectorName}</small>
+                        <br><small>الإيداعات: ${totalDeposit.toLocaleString()} ريال</small>
+                        <br><small>المتبقي: ${remainingAmount.toLocaleString()} ريال</small>
+                    </div>
+                    <div>
+                        <button onclick="loadSavedReport(${originalIndex})">تحميل</button>
+                        <button onclick="shareSavedReport(${originalIndex})">مشاركة</button>
+                        <button onclick="deleteSavedReport(${originalIndex})">حذف</button>
+                    </div>
+                `;
+                savedReportsList.appendChild(reportItem);
+            });
+        }
+
+        // تحديث جداول العملاء المديونين
+        function updateDebtorsTables() {
+            updateDebtorsTable('khamis', khamisTableBody);
+            updateDebtorsTable('dharan', dharanTableBody);
+            updateDebtorsTable('other', otherTableBody);
+        }
+
+        // تحديث جدول العملاء المديونين لمنطقة محددة
+        function updateDebtorsTable(region, tableBody) {
+            tableBody.innerHTML = '';
+            
+            if (debtorsData[region].length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <p>لا توجد بيانات للعملاء المديونين في هذه المنطقة</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            debtorsData[region].forEach((debtor, index) => {
+                const row = document.createElement('tr');
+                row.className = 'debtor-row';
+                
+                let statusClass = 'status-normal';
+                if (debtor.status === 'متأخر') statusClass = 'status-warning';
+                if (debtor.status === 'متأخر شديد') statusClass = 'status-overdue';
+                
+                row.innerHTML = `
+                    <td>${debtor.name}</td>
+                    <td>${debtor.amount.toLocaleString()} ريال</td>
+                    <td>${debtor.lastDate}</td>
+                    <td><span class="status-badge ${statusClass}">${debtor.status}</span></td>
+                    <td>${debtor.notes}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // الحصول على التقارير المحفوظة
+        function getSavedReports() {
+            const savedReports = localStorage.getItem('savedReports');
+            return savedReports ? JSON.parse(savedReports) : [];
+        }
+
+        // حفظ التقرير
+        function saveReport() {
+            if (!reportData.collectorName) {
+                showNotification('يرجى إدخال اسم المندوب', 'error');
+                return;
+            }
+            
+            if (reportData.collections.length === 0 && reportData.deposits.length === 0 && reportData.expenses.length === 0) {
+                showNotification('لا توجد بيانات لحفظها', 'error');
+                return;
+            }
+            
+            const reports = getSavedReports();
+            const reportToSave = {
+                date: reportData.reportDate,
+                collectorName: reportData.collectorName,
+                data: {...reportData},
+                timestamp: new Date().getTime()
+            };
+            
+            // التحقق من عدم وجود تقرير بنفس التاريخ والمندوب
+            const existingIndex = reports.findIndex(report => 
+                report.date === reportToSave.date && report.collectorName === reportToSave.collectorName
+            );
+            
+            if (existingIndex !== -1) {
+                reports[existingIndex] = reportToSave;
+            } else {
+                reports.push(reportToSave);
+            }
+            
+            localStorage.setItem('savedReports', JSON.stringify(reports));
+            
+            showNotification('تم حفظ التقرير بنجاح');
+            updateSavedReportsList();
+        }
+
+        // تحميل تقرير محفوظ
+        function loadSavedReport(index) {
+            const reports = getSavedReports();
+            if (reports[index]) {
+                reportData = {...reports[index].data};
+                
+                // تعبئة الحقول
+                collectorNameInput.value = reportData.collectorName || '';
+                reportDateInput.value = reportData.reportDate || '';
+                
+                updatePreview();
+                activateTab('input');
+                showNotification('تم تحميل التقرير بنجاح');
+            }
+        }
+
+        // مشاركة تقرير محفوظ
+        function shareSavedReport(index) {
+            const reports = getSavedReports();
+            if (reports[index]) {
+                const report = reports[index];
+                const totalCollection = report.data.collections.reduce((sum, item) => sum + item.amount, 0);
+                const totalDeposit = report.data.deposits.reduce((sum, item) => sum + item.amount, 0);
+                const totalExpense = report.data.expenses.reduce((sum, item) => sum + item.amount, 0);
+                const remainingAmount = totalCollection - totalDeposit - totalExpense;
+                
+                const text = `تقرير تحصيل - ${report.date} - ${report.collectorName}
+                
+إجمالي التحصيلات: ${totalCollection.toLocaleString()} ريال
+إجمالي الإيداعات: ${totalDeposit.toLocaleString()} ريال
+إجمالي المصروفات: ${totalExpense.toLocaleString()} ريال
+المبلغ المتبقي: ${remainingAmount.toLocaleString()} ريال
+
+تم إنشاء التقرير بواسطة نظام التقارير الإلكتروني لشركة أبو حذيفة`;
+                
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                
+                showNotification('تم فتح واتساب لمشاركة التقرير');
+            }
+        }
+
+        // حذف تقرير محفوظ
+        function deleteSavedReport(index) {
+            if (confirm('هل أنت متأكد من أنك تريد حذف هذا التقرير؟')) {
+                const reports = getSavedReports();
+                reports.splice(index, 1);
+                localStorage.setItem('savedReports', JSON.stringify(reports));
+                updateSavedReportsList();
+                showNotification('تم حذف التقرير بنجاح');
+            }
+        }
+
+        // مسح البيانات
+        function clearData() {
+            if (confirm('هل أنت متأكد من أنك تريد مسح جميع البيانات؟')) {
+                reportData = {
+                    collectorName: reportData.collectorName,
+                    reportDate: reportData.reportDate,
+                    collections: [],
+                    deposits: [],
+                    expenses: []
+                };
+                
+                // مسح الحقول
+                clientNameInput.value = '';
+                collectionAmountInput.value = '';
+                depositAmountInput.value = '';
+                expenseAmountInput.value = '';
+                expenseDetailsInput.value = '';
+                cardOwnerInput.value = '';
+                cardLastDigitsInput.value = '';
+                collectorNameTransferInput.value = '';
+                
+                updatePreview();
+                showNotification('تم مسح البيانات بنجاح');
+            }
+        }
+
+        // تحميل آخر بيانات
+        function loadLastData() {
+            const lastReport = localStorage.getItem('lastReportData');
+            if (lastReport) {
+                const lastData = JSON.parse(lastReport);
+                reportData.collections = lastData.collections || [];
+                reportData.deposits = lastData.deposits || [];
+                reportData.expenses = lastData.expenses || [];
+                
+                updatePreview();
+                showNotification('تم تحميل آخر بيانات بنجاح');
+            } else {
+                showNotification('لا توجد بيانات سابقة', 'error');
+            }
+        }
+
+        // تفعيل/تعطيل الحفظ التلقائي
+        function toggleAutoSave() {
+            autoSaveEnabled = !autoSaveEnabled;
+            
+            if (autoSaveEnabled) {
+                autoSaveBtn.textContent = 'تعطيل الحفظ التلقائي';
+                autoSaveBtn.classList.add('pulse');
+                autoSaveInterval = setInterval(saveReport, 30000); // حفظ كل 30 ثانية
+                showNotification('تم تفعيل الحفظ التلقائي');
+            } else {
+                autoSaveBtn.textContent = 'تفعيل الحفظ التلقائي';
+                autoSaveBtn.classList.remove('pulse');
+                clearInterval(autoSaveInterval);
+                showNotification('تم تعطيل الحفظ التلقائي');
+            }
+            
+            localStorage.setItem('autoSaveEnabled', autoSaveEnabled.toString());
+        }
+
+        // أرشفة التقرير تلقائيًا في نهاية اليوم
+        function checkAutoArchive() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // إذا كان الوقت بين 11:50 مساءً و11:59 مساءً
+            if (hours === 23 && minutes >= 50) {
+                if (reportData.collections.length > 0 || reportData.deposits.length > 0 || reportData.expenses.length > 0) {
+                    saveReport();
+                    showNotification('تم أرشفة التقرير تلقائيًا لانتهاء اليوم');
+                }
+            }
+        }
+
+        // إضافة تحصيل
+        function addCollection() {
+            const type = collectionTypeInput.value;
+            const clientName = clientNameInput.value.trim();
+            const amount = parseFloat(collectionAmountInput.value);
+            const cardOwner = cardOwnerInput.value.trim();
+            const cardLastDigits = cardLastDigitsInput.value.trim();
+            
+            if (!clientName || isNaN(amount) || amount <= 0) {
+                showNotification('يرجى إدخال بيانات التحصيل بشكل صحيح', 'error');
+                return;
+            }
+            
+            if (type === 'سحب من البطاقة' && (!cardOwner || !cardLastDigits)) {
+                showNotification('يرجى إدخال بيانات البطاقة', 'error');
+                return;
+            }
+            
+            let displayName = clientName;
+            if (type === 'سحب من البطاقة') {
+                displayName = `${clientName} (سحب من بطاقة: ${cardOwner} - ${cardLastDigits})`;
+            }
+            
+            reportData.collections.push({
+                type,
+                clientName,
+                displayName,
+                amount,
+                cardOwner,
+                cardLastDigits
+            });
+            
+            clientNameInput.value = '';
+            collectionAmountInput.value = '';
+            cardOwnerInput.value = '';
+            cardLastDigitsInput.value = '';
+            cardPaymentSection.style.display = 'none';
+            
+            updatePreview();
+            saveToLocalStorage();
+            showNotification('تم إضافة التحصيل بنجاح');
+            
+            // إظهار زر المشاركة
+            shareCollectionBtn.style.display = 'inline-block';
+        }
+
+        // إضافة إيداع
+        function addDeposit() {
+            const depositName = depositNameInput.value;
+            const amount = parseFloat(depositAmountInput.value);
+            
+            if (!depositName || isNaN(amount) || amount <= 0) {
+                showNotification('يرجى إدخال بيانات الإيداع بشكل صحيح', 'error');
+                return;
+            }
+            
+            // البحث عن رقم الحساب إذا كان موجوداً
+            let accountNumber = '';
+            let accountLimit = 0;
+            const account = accounts.find(acc => acc.name === depositName);
+            if (account) {
+                accountNumber = account.accountNumber || '';
+                accountLimit = account.limit || 0;
+            }
+            
+            // التحقق من تجاوز السقف المالي
+            const currentTotal = getAccountTotal(depositName);
+            if (accountLimit > 0 && (currentTotal + amount) > accountLimit) {
+                if (!confirm(`تحذير: هذا الإيداع سيتجاوز السقف المالي للحساب (${accountLimit.toLocaleString()} ريال). هل تريد المتابعة؟`)) {
+                    return;
+                }
+            }
+            
+            reportData.deposits.push({
+                depositName,
+                accountNumber,
+                amount
+            });
+            
+            depositNameInput.value = '';
+            depositAmountInput.value = '';
+            
+            updatePreview();
+            saveToLocalStorage();
+            showNotification('تم إضافة الإيداع بنجاح');
+            
+            // إظهار زر المشاركة
+            shareDepositBtn.style.display = 'inline-block';
+        }
+
+        // إضافة مصروف
+        function addExpense() {
+            const type = expenseTypeInput.value;
+            const amount = parseFloat(expenseAmountInput.value);
+            const details = expenseDetailsInput.value.trim();
+            const collectorName = collectorNameTransferInput.value.trim();
+            
+            if (isNaN(amount) || amount <= 0) {
+                showNotification('يرجى إدخال مبلغ المصروف بشكل صحيح', 'error');
+                return;
+            }
+            
+            let displayType = type;
+            if (type === 'تسليم إلى مندوب' && collectorName) {
+                displayType = `${type} (${collectorName})`;
+            }
+            
+            reportData.expenses.push({
+                type: displayType,
+                amount,
+                details: details || 'لا يوجد',
+                collectorName
+            });
+            
+            expenseAmountInput.value = '';
+            expenseDetailsInput.value = '';
+            collectorNameTransferInput.value = '';
+            collectorTransferSection.style.display = 'none';
+            expenseTypeInput.value = 'مصاريف للبيت';
+            
+            updatePreview();
+            saveToLocalStorage();
+            showNotification('تم إضافة المصروف بنجاح');
+            
+            // إظهار زر المشاركة
+            shareExpenseBtn.style.display = 'inline-block';
+        }
+
+        // مشاركة تفاصيل العملية
+        function shareDetails(type) {
+            let message = '';
+            
+            if (type === 'collection' && reportData.collections.length > 0) {
+                const lastCollection = reportData.collections[reportData.collections.length - 1];
+                message = `تحصيل جديد:
+نوع التحصيل: ${lastCollection.type}
+العميل: ${lastCollection.clientName}
+المبلغ: ${lastCollection.amount.toLocaleString()} ريال
+المندوب: ${reportData.collectorName}
+التاريخ: ${reportData.reportDate}`;
+                
+                if (lastCollection.type === 'سحب من البطاقة') {
+                    message += `
+صاحب البطاقة: ${lastCollection.cardOwner}
+آخر 4 أرقام: ${lastCollection.cardLastDigits}`;
+                }
+            }
+            else if (type === 'deposit' && reportData.deposits.length > 0) {
+                const lastDeposit = reportData.deposits[reportData.deposits.length - 1];
+                const account = accounts.find(acc => acc.name === lastDeposit.depositName);
+                const totalToday = getAccountTotal(lastDeposit.depositName);
+                const remaining = account && account.limit ? account.limit - totalToday : 0;
+                
+                message = `إيداع جديد:
+الحساب: ${lastDeposit.depositName}
+المبلغ: ${lastDeposit.amount.toLocaleString()} ريال
+إجمالي إيداعات اليوم: ${totalToday.toLocaleString()} ريال
+المتبقي للسقف اليومي: ${remaining.toLocaleString()} ريال
+المندوب: ${reportData.collectorName}
+التاريخ: ${reportData.reportDate}`;
+                
+                if (lastDeposit.accountNumber) {
+                    message += `
+رقم الحساب: ${lastDeposit.accountNumber}`;
+                }
+            }
+            else if (type === 'expense' && reportData.expenses.length > 0) {
+                const lastExpense = reportData.expenses[reportData.expenses.length - 1];
+                message = `مصروف جديد:
+النوع: ${lastExpense.type}
+المبلغ: ${lastExpense.amount.toLocaleString()} ريال
+التفاصيل: ${lastExpense.details}
+المندوب: ${reportData.collectorName}
+التاريخ: ${reportData.reportDate}`;
+            }
+            
+            if (message) {
+                const totalCollection = reportData.collections.reduce((sum, item) => sum + item.amount, 0);
+                const totalDeposit = reportData.deposits.reduce((sum, item) => sum + item.amount, 0);
+                const totalExpense = reportData.expenses.reduce((sum, item) => sum + item.amount, 0);
+                const remainingAmount = totalCollection - totalDeposit - totalExpense;
+                
+                message += `
+
+المبلغ المتبقي: ${remainingAmount.toLocaleString()} ريال`;
+                
+                window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+                showNotification('تم فتح واتساب لمشاركة التفاصيل');
+            }
+        }
+
+        // مشاركة المبلغ الإجمالي
+        function shareTotalAmount() {
+            const totalCollection = reportData.collections.reduce((sum, item) => sum + item.amount, 0);
+            const totalDeposit = reportData.deposits.reduce((sum, item) => sum + item.amount, 0);
+            const totalExpense = reportData.expenses.reduce((sum, item) => sum + item.amount, 0);
+            const remainingAmount = totalCollection - totalDeposit - totalExpense;
+            
+            const message = `ملخص التقرير - ${reportData.reportDate}
+المندوب: ${reportData.collectorName}
+
+إجمالي التحصيلات: ${totalCollection.toLocaleString()} ريال
+إجمالي الإيداعات: ${totalDeposit.toLocaleString()} ريال
+إجمالي المصروفات: ${totalExpense.toLocaleString()} ريال
+المبلغ المتبقي: ${remainingAmount.toLocaleString()} ريال
+
+تم إنشاء التقرير بواسطة نظام التقارير الإلكتروني لشركة أبو حذيفة`;
+            
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+            showNotification('تم فتح واتساب لمشاركة الإجمالي');
+        }
+
+        // حذف تحصيل
+        function deleteCollection(index) {
+            if (confirm('هل تريد حذف هذا التحصيل؟')) {
+                reportData.collections.splice(index, 1);
+                updatePreview();
+                saveToLocalStorage();
+                showNotification('تم حذف التحصيل بنجاح');
+            }
+        }
+
+        // حذف إيداع
+        function deleteDeposit(index) {
+            if (confirm('هل تريد حذف هذا الإيداع؟')) {
+                reportData.deposits.splice(index, 1);
+                updatePreview();
+                saveToLocalStorage();
+                showNotification('تم حذف الإيداع بنجاح');
+            }
+        }
+
+        // حذف مصروف
+        function deleteExpense(index) {
+            if (confirm('هل تريد حذف هذا المصروف؟')) {
+                reportData.expenses.splice(index, 1);
+                updatePreview();
+                saveToLocalStorage();
+                showNotification('تم حذف المصروف بنجاح');
+            }
+        }
+
+        // إضافة حساب
+        function addAccount() {
+            const name = newAccountNameInput.value.trim();
+            const accountNumber = newAccountNumberInput.value.trim();
+            const limit = parseFloat(newAccountLimitInput.value) || 0;
+            
+            if (!name) {
+                showNotification('يرجى إدخال اسم الحساب', 'error');
+                return;
+            }
+            
+            accounts.push({
+                name,
+                accountNumber,
+                limit
+            });
+            
+            newAccountNameInput.value = '';
+            newAccountNumberInput.value = '';
+            newAccountLimitInput.value = '';
+            
+            localStorage.setItem('depositAccounts', JSON.stringify(accounts));
+            updateAccountsDropdown();
+            updateAccountsList();
+            showNotification('تم إضافة الحساب بنجاح');
+        }
+
+        // تعديل حساب
+        function editAccount(index) {
+            const account = accounts[index];
+            const newName = prompt('اسم الحساب:', account.name);
+            if (newName === null) return;
+            
+            const newNumber = prompt('رقم الحساب:', account.accountNumber || '');
+            if (newNumber === null) return;
+            
+            const newLimit = prompt('سقف الحساب (ريال):', account.limit || '');
+            if (newLimit === null) return;
+            
+            accounts[index] = {
+                name: newName,
+                accountNumber: newNumber,
+                limit: parseFloat(newLimit) || 0
+            };
+            
+            localStorage.setItem('depositAccounts', JSON.stringify(accounts));
+            updateAccountsDropdown();
+            updateAccountsList();
+            showNotification('تم تعديل الحساب بنجاح');
+        }
+
+        // حذف حساب
+        function deleteAccount(index) {
+            if (confirm('هل أنت متأكد من أنك تريد حذف هذا الحساب؟')) {
+                accounts.splice(index, 1);
+                localStorage.setItem('depositAccounts', JSON.stringify(accounts));
+                updateAccountsDropdown();
+                updateAccountsList();
+                showNotification('تم حذف الحساب بنجاح');
+            }
+        }
+
+        // حفظ البيانات إلى localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('lastReportData', JSON.stringify(reportData));
+        }
+
+        // تحديث معاينة التقرير
+        function updatePreview() {
+            // تحديث التاريخ واسم المندوب
+            previewDate.textContent = `التاريخ: ${reportData.reportDate || '-'}`;
+            previewCollector.textContent = `اسم المندوب: ${reportData.collectorName || '-'}`;
+            
+            // حساب المجاميع
+            const totalCollection = reportData.collections.reduce((sum, item) => sum + item.amount, 0);
+            const totalDeposit = reportData.deposits.reduce((sum, item) => sum + item.amount, 0);
+            const totalExpense = reportData.expenses.reduce((sum, item) => sum + item.amount, 0);
+            const remainingAmount = totalCollection - totalDeposit - totalExpense;
+            
+            // تحديث العناصر
+            totalCollectionElem.textContent = `${totalCollection.toLocaleString()} ريال`;
+            totalDepositElem.textContent = `${totalDeposit.toLocaleString()} ريال`;
+            totalExpenseElem.textContent = `${totalExpense.toLocaleString()} ريال`;
+            remainingAmountElem.textContent = `${remainingAmount.toLocaleString()} ريال`;
+            
+            // تحديث جدول التحصيلات
+            collectionsTableBody.innerHTML = '';
+            reportData.collections.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.className = 'fade-in';
+                row.innerHTML = `
+                    <td>${item.displayName || item.clientName}</td>
+                    <td>${item.amount.toLocaleString()}</td>
+                    <td>
+                        <button class="action-btn" onclick="deleteCollection(${index})">حذف</button>
+                        <button class="action-btn btn-share" onclick="shareSingleItem('collection', ${index})">مشاركة</button>
+                    </td>
+                `;
+                collectionsTableBody.appendChild(row);
+            });
+            
+            // تحديث جدول الإيداعات
+            depositsTableBody.innerHTML = '';
+            reportData.deposits.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.className = 'fade-in';
+                row.innerHTML = `
+                    <td>${item.depositName} ${item.accountNumber ? `(${item.accountNumber})` : ''}</td>
+                    <td>${item.amount.toLocaleString()}</td>
+                    <td>
+                        <button class="action-btn" onclick="deleteDeposit(${index})">حذف</button>
+                        <button class="action-btn btn-share" onclick="shareSingleItem('deposit', ${index})">مشاركة</button>
+                    </td>
+                `;
+                depositsTableBody.appendChild(row);
+            });
+            
+            // تحديث جدول المصروفات
+            expensesTableBody.innerHTML = '';
+            reportData.expenses.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.className = 'fade-in';
+                row.innerHTML = `
+                    <td>${item.type}${item.details && item.details !== 'لا يوجد' ? ` (${item.details})` : ''}</td>
+                    <td>${item.amount.toLocaleString()}</td>
+                    <td>
+                        <button class="action-btn" onclick="deleteExpense(${index})">حذف</button>
+                        <button class="action-btn btn-share" onclick="shareSingleItem('expense', ${index})">مشاركة</button>
+                    </td>
+                `;
+                expensesTableBody.appendChild(row);
+            });
+        }
+
+        // مشاركة عنصر فردي
+        function shareSingleItem(type, index) {
+            let message = '';
+            
+            if (type === 'collection' && reportData.collections[index]) {
+                const item = reportData.collections[index];
+                message = `تفاصيل التحصيل:
+نوع التحصيل: ${item.type}
+العميل: ${item.clientName}
+المبلغ: ${item.amount.toLocaleString()} ريال
+المندوب: ${reportData.collectorName}
+التاريخ: ${reportData.reportDate}`;
+                
+                if (item.type === 'سحب من البطاقة') {
+                    message += `
+صاحب البطاقة: ${item.cardOwner}
+آخر 4 أرقام: ${item.cardLastDigits}`;
+                }
+            }
+            else if (type === 'deposit' && reportData.deposits[index]) {
+                const item = reportData.deposits[index];
+                const account = accounts.find(acc => acc.name === item.depositName);
+                const totalToday = getAccountTotal(item.depositName);
+                const remaining = account && account.limit ? account.limit - totalToday : 0;
+                
+                message = `تفاصيل الإيداع:
+الحساب: ${item.depositName}
+المبلغ: ${item.amount.toLocaleString()} ريال
+إجمالي إيداعات اليوم: ${totalToday.toLocaleString()} ريال
+المتبقي للسقف اليومي: ${remaining.toLocaleString()} ريال
+المندوب: ${reportData.collectorName}
+التاريخ: ${reportData.reportDate}`;
+                
+                if (item.accountNumber) {
+                    message += `
+رقم الحساب: ${item.accountNumber}`;
+                }
+            }
+            else if (type === 'expense' && reportData.expenses[index]) {
+                const item = reportData.expenses[index];
+                message = `تفاصيل المصروف:
+النوع: ${item.type}
+المبلغ: ${item.amount.toLocaleString()} ريال
+التفاصيل: ${item.details}
+المندوب: ${reportData.collectorName}
+التاريخ: ${reportData.reportDate}`;
+            }
+            
+            if (message) {
+                window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+                showNotification('تم فتح واتساب لمشاركة التفاصيل');
+            }
+        }
+
+        // توليد التقرير
+        function generateReport() {
+            if (!reportData.collectorName) {
+                showNotification('يرجى إدخال اسم المندوب', 'error');
+                return;
+            }
+            
+            updatePreview();
+            saveToLocalStorage();
+            showNotification('تم تحديث التقرير بنجاح');
+        }
+
+        // تحميل PDF
+        function downloadPdf() {
+            if (!reportData.collectorName) {
+                showNotification('يرجى إدخال اسم المندوب أولاً', 'error');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // استخدام html2canvas لالتقاط المحتوى وتحويله إلى صورة
+            html2canvas(document.getElementById('report-preview')).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = doc.internal.pageSize.getWidth();
+                let imgHeight = canvas.height * imgWidth / canvas.width;
+                
+                // إذا كان التقرير طويلاً، نقسمه إلى عدة صفحات
+                const pageHeight = doc.internal.pageSize.getHeight();
+                let remainingHeight = imgHeight;
+                let position = 0;
+                
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                remainingHeight -= pageHeight;
+                
+                // إضافة صفحات إضافية إذا لزم الأمر
+                while (remainingHeight > 0) {
+                    position = remainingHeight - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    remainingHeight -= pageHeight;
+                }
+                
+                // حفظ الملف
+                const fileName = `تقرير_تحصيل_${reportData.reportDate}_${reportData.collectorName}.pdf`;
+                doc.save(fileName);
+                
+                showNotification('تم تحميل التقرير بنجاح');
+            });
+        }
+
+        // تحميل Excel
+        function downloadExcel() {
+            if (!reportData.collectorName) {
+                showNotification('يرجى إدخال اسم المندوب أولاً', 'error');
+                return;
+            }
+            
+            // إنشاء مصنف Excel
+            const wb = XLSX.utils.book_new();
+            
+            // إضافة ورقة للتحصيلات
+            const collectionsData = [['نوع التحصيل', 'العميل', 'المبلغ (ريال)', 'ملاحظات']];
+            reportData.collections.forEach(item => {
+                let notes = '';
+                if (item.type === 'سحب من البطاقة') {
+                    notes = `صاحب البطاقة: ${item.cardOwner}, آخر 4 أرقام: ${item.cardLastDigits}`;
+                }
+                collectionsData.push([item.type, item.clientName, item.amount, notes]);
+            });
+            const wsCollections = XLSX.utils.aoa_to_sheet(collectionsData);
+            XLSX.utils.book_append_sheet(wb, wsCollections, 'التحصيلات');
+            
+            // إضافة ورقة للإيداعات
+            const depositsData = [['المستفيد', 'رقم الحساب', 'المبلغ (ريال)', 'السقف المالي', 'الحالة']];
+            reportData.deposits.forEach(item => {
+                const account = accounts.find(acc => acc.name === item.depositName);
+                const limit = account ? account.limit : 0;
+                const currentTotal = getAccountTotal(item.depositName);
+                const status = getLimitStatus(limit, currentTotal).text;
+                
+                depositsData.push([item.depositName, item.accountNumber || 'غير محدد', item.amount, limit, status]);
+            });
+            const wsDeposits = XLSX.utils.aoa_to_sheet(depositsData);
+            XLSX.utils.book_append_sheet(wb, wsDeposits, 'الإيداعات');
+            
+            // إضافة ورقة للمصروفات
+            const expensesData = [['نوع المصروف', 'المبلغ (ريال)', 'التفاصيل']];
+            reportData.expenses.forEach(item => {
+                expensesData.push([item.type, item.amount, item.details]);
+            });
+            const wsExpenses = XLSX.utils.aoa_to_sheet(expensesData);
+            XLSX.utils.book_append_sheet(wb, wsExpenses, 'المصروفات');
+            
+            // إضافة ورقة للملخص
+            const totalCollection = reportData.collections.reduce((sum, item) => sum + item.amount, 0);
+            const totalDeposit = reportData.deposits.reduce((sum, item) => sum + item.amount, 0);
+            const totalExpense = reportData.expenses.reduce((sum, item) => sum + item.amount, 0);
+            const remainingAmount = totalCollection - totalDeposit - totalExpense;
+            
+            const summaryData = [
+                ['ملخص التقرير'],
+                [''],
+                ['إجمالي التحصيلات', totalCollection],
+                ['إجمالي الإيداعات', totalDeposit],
+                ['إجمالي المصروفات', totalExpense],
+                ['المبلغ المتبقي', remainingAmount],
+                [''],
+                ['تاريخ التقرير', reportData.reportDate],
+                ['اسم المندوب', reportData.collectorName]
+            ];
+            const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+            XLSX.utils.book_append_sheet(wb, wsSummary, 'ملخص التقرير');
+            
+            // حفظ الملف
+            const fileName = `تقرير_تحصيل_${reportData.reportDate}_${reportData.collectorName}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            
+            showNotification('تم تحميل ملف Excel بنجاح');
+        }
+
+        // مشاركة عبر البريد
+        function shareViaEmail(type) {
+            const subject = `تقرير تحصيل - ${reportData.reportDate} - ${reportData.collectorName}`;
+            const body = `مرفق تقرير التحصيل ليوم ${reportData.reportDate} للمندوب ${reportData.collectorName}`;
+            
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            showNotification(`تم فتح نافذة البريد الإلكتروني لمشاركة ${type === 'pdf' ? 'PDF' : 'Excel'}`);
+        }
+
+        // مشاركة عبر واتساب
+        function shareViaWhatsApp(type) {
+            const totalCollection = reportData.collections.reduce((sum, item) => sum + item.amount, 0);
+            const totalDeposit = reportData.deposits.reduce((sum, item) => sum + item.amount, 0);
+            const totalExpense = reportData.expenses.reduce((sum, item) => sum + item.amount, 0);
+            const remainingAmount = totalCollection - totalDeposit - totalExpense;
+            
+            const text = `تقرير تحصيل - ${reportData.reportDate} - ${reportData.collectorName}
+            
+إجمالي التحصيلات: ${totalCollection.toLocaleString()} ريال
+إجمالي الإيداعات: ${totalDeposit.toLocaleString()} ريال
+إجمالي المصروفات: ${totalExpense.toLocaleString()} ريال
+المبلغ المتبقي: ${remainingAmount.toLocaleString()} ريال
+
+تم إنشاء التقرير بواسطة نظام التقارير الإلكتروني لشركة أبو حذيفة`;
+            
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            
+            showNotification(`تم فتح واتساب لمشاركة ${type === 'pdf' ? 'PDF' : 'Excel'}`);
+        }
+
+        // تحميل بيانات العملاء المديونين
+        function loadDebtorsData() {
+            // إذا كانت البيانات محفوظة محلياً، استخدمها
+            if (debtorsData.khamis.length > 0 || debtorsData.dharan.length > 0 || debtorsData.other.length > 0) {
+                return;
+            }
+            
+            // إذا لم تكن هناك بيانات محفوظة، قم بتحميل بيانات افتراضية
+            loadSampleDebtorsData();
+        }
+
+        // تحميل بيانات افتراضية للعملاء المديونين
+        function loadSampleDebtorsData() {
+            // بيانات افتراضية للعملاء المديونين
+            debtorsData.khamis = [
+                { name: 'عبدالله أحمد', amount: 5000, lastDate: '2023-10-15', status: 'متأخر', notes: 'سيتم السداد نهاية الشهر' },
+                { name: 'محمد السبيعي', amount: 3200, lastDate: '2023-10-10', status: 'متأخر شديد', notes: 'تأخر أكثر من شهر' },
+                { name: 'سعيد القحطاني', amount: 1500, lastDate: '2023-10-20', status: 'عادي', notes: 'سيتم المتابعة' }
+            ];
+            
+            debtorsData.dharan = [
+                { name: 'فهد الغامدي', amount: 4200, lastDate: '2023-10-12', status: 'متأخر', notes: 'تم الاتصال به' },
+                { name: 'خالد الشهراني', amount: 2800, lastDate: '2023-10-18', status: 'عادي', notes: 'سيتم السداد قريباً' }
+            ];
+            
+            debtorsData.other = [
+                { name: 'أحمد الزهراني', amount: 6100, lastDate: '2023-10-05', status: 'متأخر شديد', notes: 'مطلوب متابعة عاجلة' },
+                { name: 'يوسف الحربي', amount: 1900, lastDate: '2023-10-22', status: 'عادي', notes: 'لا يوجد مشكلة' }
+            ];
+            
+            debtorsData.lastSync = new Date().getTime();
+            
+            // حفظ البيانات محلياً
+            localStorage.setItem('debtorsData', JSON.stringify(debtorsData));
+            
+            // تحديث حالة المزامنة
+            syncStatusElem.textContent = `آخر تحديث: ${new Date().toLocaleString('ar-SA')}`;
+            
+            // تحديث الجداول
+            updateDebtorsTables();
+        }
+
+        // مزامنة بيانات العملاء المديونين يدوياً
+        function syncDebtorsData() {
+            syncNowBtn.innerHTML = '<span class="loading"></span> جاري المزامنة...';
+            syncNowBtn.disabled = true;
+            
+            // محاكاة عملية المزامنة
+            setTimeout(() => {
+                // في الواقع الفعلي، هنا سيتم جلب البيانات من مصدر خارجي
+                // ولكن لأغراض العرض، سنستخدم البيانات الافتراضية
+                loadSampleDebtorsData();
+                
+                syncNowBtn.innerHTML = 'مزامنة الآن';
+                syncNowBtn.disabled = false;
+                
+                showNotification('تم مزامنة بيانات العملاء المديونين بنجاح');
+            }, 1500);
+        }
+
+        // وظيفة لعرض الإشعارات
+        function showNotification(message, type = 'success') {
+            // إزالة أي إشعارات سابقة
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => {
+                document.body.removeChild(notification);
+            });
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // تهيئة الصفحة عند التحميل
+        window.onload = init;
     </script>
 </body>
 </html>
