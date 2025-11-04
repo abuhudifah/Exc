@@ -391,7 +391,7 @@
                 <p class="text-gray-600 text-sm md:text-base">يرجى إدخال اسمك للمتابعة</p>
             </div>
             <input type="text" id="agentNameInput" placeholder="اسم المندوب" class="w-full p-3 md:p-4 form-input rounded-xl mb-4 md:mb-6 text-right text-base md:text-lg">
-            <button onclick="setAgentName()" class="w-full btn-admin text-white py-3 md:py-4 rounded-xl text-base md:text-lg font-semibold">
+            <button type="button" onclick="setAgentName()" class="w-full btn-admin text-white py-3 md:py-4 rounded-xl text-base md:text-lg font-semibold">
                 <i class="fas fa-sign-in-alt ml-2"></i>
                 دخول النظام
             </button>
@@ -402,25 +402,25 @@
     <nav class="bg-transparent p-2 md:p-4">
         <div class="container mx-auto">
             <div class="tabs-container flex overflow-x-auto space-x-2 space-x-reverse pb-2">
-                <button onclick="showTab('collections')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-active transition-all" id="tab-collections">
+                <button type="button" onclick="showTab('collections')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-active transition-all" id="tab-collections">
                     <i class="fas fa-money-bill-wave ml-2"></i>التحصيلات
                 </button>
-                <button onclick="showTab('deposits')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-deposits">
+                <button type="button" onclick="showTab('deposits')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-deposits">
                     <i class="fas fa-university ml-2"></i>الإيداعات
                 </button>
-                <button onclick="showTab('expenses')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-expenses">
+                <button type="button" onclick="showTab('expenses')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-expenses">
                     <i class="fas fa-receipt ml-2"></i>المصروفات
                 </button>
-                <button onclick="showTab('deliveries')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-deliveries">
+                <button type="button" onclick="showTab('deliveries')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-deliveries">
                     <i class="fas fa-exchange-alt ml-2"></i>الاستلام/التسليم
                 </button>
-                <button onclick="showTab('summary')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-summary">
+                <button type="button" onclick="showTab('summary')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-summary">
                     <i class="fas fa-chart-line ml-2"></i>ملخص اليوم
                 </button>
-                <button onclick="showTab('accounts')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-accounts">
+                <button type="button" onclick="showTab('accounts')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-accounts">
                     <i class="fas fa-credit-card ml-2"></i>الحسابات
                 </button>
-                <button onclick="showTab('statement')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-statement">
+                <button type="button" onclick="showTab('statement')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-statement">
                     <i class="fas fa-file-invoice ml-2"></i>كشف الحساب
                 </button>
             </div>
@@ -702,16 +702,16 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap gap-2 md:space-x-3 md:space-x-reverse">
-                            <button onclick="shareWorkData()" class="flex-1 md:flex-none px-4 py-2 md:px-6 md:py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all text-sm md:text-base">
+                            <button type="button" onclick="shareWorkData()" class="flex-1 md:flex-none px-4 py-2 md:px-6 md:py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all text-sm md:text-base">
                                 <i class="fas fa-share ml-1 md:ml-2"></i>مشاركة بيانات العمل
                             </button>
-                            <button onclick="shareReport()" class="flex-1 md:flex-none px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
+                            <button type="button" onclick="shareReport()" class="flex-1 md:flex-none px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
                                 <i class="fas fa-share-alt ml-1 md:ml-2"></i>مشاركة
                             </button>
-                            <button onclick="exportToPDF()" class="flex-1 md:flex-none px-4 py-2 md:px-6 md:py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-all text-sm md:text-base">
+                            <button type="button" onclick="exportToPDF()" class="flex-1 md:flex-none px-4 py-2 md:px-6 md:py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-all text-sm md:text-base">
                                 <i class="fas fa-file-pdf ml-1 md:ml-2"></i>PDF
                             </button>
-                            <button onclick="exportToExcel()" class="flex-1 md:flex-none px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
+                            <button type="button" onclick="exportToExcel()" class="flex-1 md:flex-none px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
                                 <i class="fas fa-file-excel ml-1 md:ml-2"></i>Excel
                             </button>
                         </div>
@@ -735,16 +735,16 @@
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-2 md:gap-3">
-                        <button onclick="showAddAccountModal()" class="px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
+                        <button type="button" onclick="showAddAccountModal()" class="px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
                             <i class="fas fa-plus ml-1 md:ml-2"></i>إضافة حساب جديد
                         </button>
-                        <button onclick="manualResetDailyLimits()" class="px-4 py-2 md:px-6 md:py-3 btn-reset text-white rounded-xl font-semibold text-sm md:text-base">
+                        <button type="button" onclick="manualResetDailyLimits()" class="px-4 py-2 md:px-6 md:py-3 btn-reset text-white rounded-xl font-semibold text-sm md:text-base">
                             <i class="fas fa-sync-alt ml-1 md:ml-2"></i>إعادة تعيين الحسابات
                         </button>
                     </div>
                 </div>
                 <div class="mb-4 md:mb-6">
-                    <button onclick="shareAllAccountsReport()" class="w-full md:w-auto px-4 py-2 md:px-6 md:py-3 btn-admin text-white rounded-xl font-semibold text-sm md:text-base">
+                    <button type="button" onclick="shareAllAccountsReport()" class="w-full md:w-auto px-4 py-2 md:px-6 md:py-3 btn-admin text-white rounded-xl font-semibold text-sm md:text-base">
                         <i class="fas fa-share-alt ml-1 md:ml-2"></i>مشاركة تقرير جميع الحسابات
                     </button>
                 </div>
@@ -766,10 +766,10 @@
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-2 md:space-x-3 md:space-x-reverse">
-                        <button onclick="generateStatementReport()" class="px-4 py-2 md:px-6 md:py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all text-sm md:text-base">
+                        <button type="button" onclick="generateStatementReport()" class="px-4 py-2 md:px-6 md:py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all text-sm md:text-base">
                             <i class="fas fa-download ml-1 md:ml-2"></i>تصدير الكشف
                         </button>
-                        <button onclick="shareStatement()" class="px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
+                        <button type="button" onclick="shareStatement()" class="px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
                             <i class="fas fa-share-alt ml-1 md:ml-2"></i>مشاركة الكشف
                         </button>
                     </div>
@@ -854,10 +854,10 @@
             </div>
             <textarea id="shareText" class="w-full h-40 md:h-64 p-3 md:p-4 form-input rounded-xl text-right text-sm md:text-base" readonly></textarea>
             <div class="flex flex-col md:flex-row gap-3 md:gap-4 mt-4 md:mt-6">
-                <button onclick="copyToClipboard()" class="flex-1 btn-admin text-white py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg">
+                <button type="button" onclick="copyToClipboard()" class="flex-1 btn-admin text-white py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg">
                     <i class="fas fa-copy ml-2"></i>نسخ النص
                 </button>
-                <button onclick="hideShareModal()" class="flex-1 bg-gray-500 text-white py-3 md:py-4 rounded-xl font-semibold hover:bg-gray-600 transition-colors text-base md:text-lg">
+                <button type="button" onclick="hideShareModal()" class="flex-1 bg-gray-500 text-white py-3 md:py-4 rounded-xl font-semibold hover:bg-gray-600 transition-colors text-base md:text-lg">
                     <i class="fas fa-times ml-2"></i>إغلاق
                 </button>
             </div>
@@ -875,10 +875,10 @@
                 <p class="text-gray-600 text-sm md:text-base" id="deleteConfirmText">هل أنت متأكد من حذف هذا الحساب البنكي؟</p>
             </div>
             <div class="flex flex-col md:flex-row gap-3 md:gap-4">
-                <button onclick="confirmDelete()" class="flex-1 btn-delete text-white py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg">
+                <button type="button" onclick="confirmDelete()" class="flex-1 btn-delete text-white py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg">
                     <i class="fas fa-trash ml-2"></i>نعم، احذف
                 </button>
-                <button onclick="hideDeleteConfirmModal()" class="flex-1 bg-gray-500 text-white py-3 md:py-4 rounded-xl font-semibold hover:bg-gray-600 transition-colors text-base md:text-lg">
+                <button type="button" onclick="hideDeleteConfirmModal()" class="flex-1 bg-gray-500 text-white py-3 md:py-4 rounded-xl font-semibold hover:bg-gray-600 transition-colors text-base md:text-lg">
                     <i class="fas fa-times ml-2"></i>إلغاء
                 </button>
             </div>
@@ -979,7 +979,7 @@
     </div>
 
     <script>
-        // Firebase Configuration - نفس إعدادات لوحة الإدارة
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCZ9IUXRK-5Kb-TWhQL9nuwse_lmdCzP9g",
             authDomain: "abu-hatheefa-app-68ff1.firebaseapp.com",
@@ -990,7 +990,11 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch (error) {
+            console.log('Firebase already initialized');
+        }
         const db = firebase.firestore();
 
         // Global Variables
@@ -1072,11 +1076,13 @@
 
         function setupCardNumberFormatting() {
             const cardInput = document.getElementById('cardNumber');
-            cardInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
-                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-                e.target.value = formattedValue;
-            });
+            if (cardInput) {
+                cardInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    e.target.value = formattedValue;
+                });
+            }
         }
 
         // ========== دالة التحقق وإعادة تعيين الحسابات البنكية عند بدء يوم جديد ==========
@@ -1635,26 +1641,33 @@
             const depositSelect = document.getElementById('bankAccount');
             const collectionSelect = document.getElementById('collectionBankAccount');
             
-            depositSelect.innerHTML = '<option value="">اختر الحساب البنكي</option>';
-            collectionSelect.innerHTML = '<option value="">اختر الحساب البنكي</option>';
-            
-            bankAccounts.forEach(account => {
-                const option1 = document.createElement('option');
-                option1.value = account.id;
-                option1.textContent = `${account.name} - ${account.number}`;
-                depositSelect.appendChild(option1);
+            if (depositSelect) {
+                depositSelect.innerHTML = '<option value="">اختر الحساب البنكي</option>';
+                bankAccounts.forEach(account => {
+                    const option = document.createElement('option');
+                    option.value = account.id;
+                    option.textContent = `${account.name} - ${account.number}`;
+                    depositSelect.appendChild(option);
+                });
                 
-                const option2 = document.createElement('option');
-                option2.value = account.id;
-                option2.textContent = `${account.name} - ${account.number}`;
-                collectionSelect.appendChild(option2);
-            });
+                if (defaultBankAccount && bankAccounts.find(acc => acc.id === defaultBankAccount)) {
+                    depositSelect.value = defaultBankAccount;
+                }
+            }
             
-            if (defaultBankAccount && bankAccounts.find(acc => acc.id === defaultBankAccount)) {
-                depositSelect.value = defaultBankAccount;
+            if (collectionSelect) {
+                collectionSelect.innerHTML = '<option value="">اختر الحساب البنكي</option>';
+                bankAccounts.forEach(account => {
+                    const option = document.createElement('option');
+                    option.value = account.id;
+                    option.textContent = `${account.name} - ${account.number}`;
+                    collectionSelect.appendChild(option);
+                });
             }
             
             const accountsList = document.getElementById('bankAccountsList');
+            if (!accountsList) return;
+            
             accountsList.innerHTML = '';
             
             bankAccounts.forEach(account => {
@@ -1665,10 +1678,10 @@
                 div.className = 'bank-card rounded-2xl p-4 md:p-6 relative overflow-hidden';
                 div.innerHTML = `
                     <div class="account-actions">
-                        <button onclick="editBankAccount('${account.id}')" class="account-action-btn btn-edit">
+                        <button type="button" onclick="editBankAccount('${account.id}')" class="account-action-btn btn-edit">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button onclick="confirmDeleteAccount('${account.id}', '${account.name}')" class="account-action-btn btn-delete">
+                        <button type="button" onclick="confirmDeleteAccount('${account.id}', '${account.name}')" class="account-action-btn btn-delete">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -1678,7 +1691,7 @@
                                 <h4 class="text-lg md:text-xl font-bold mb-1">${account.name}</h4>
                                 <p class="text-xs md:text-sm opacity-80">رقم الحساب: ${account.number}</p>
                             </div>
-                            <button onclick="shareAccountReport('${account.id}')" class="bg-white bg-opacity-20 hover:bg-opacity-30 p-1 md:p-2 rounded-lg transition-all">
+                            <button type="button" onclick="shareAccountReport('${account.id}')" class="bg-white bg-opacity-20 hover:bg-opacity-30 p-1 md:p-2 rounded-lg transition-all">
                                 <i class="fas fa-share-alt text-white text-sm md:text-base"></i>
                             </button>
                         </div>
@@ -1729,25 +1742,29 @@
                 });
                 
                 const select = document.getElementById('deliveryAgent');
-                select.innerHTML = '<option value="">اختر المندوب</option>';
-                
-                agents.forEach(agent => {
-                    const option = document.createElement('option');
-                    option.value = agent;
-                    option.textContent = agent;
-                    select.appendChild(option);
-                });
+                if (select) {
+                    select.innerHTML = '<option value="">اختر المندوب</option>';
+                    
+                    agents.forEach(agent => {
+                        const option = document.createElement('option');
+                        option.value = agent;
+                        option.textContent = agent;
+                        select.appendChild(option);
+                    });
+                }
 
                 // Update edit delivery agent dropdown
                 const editDeliveryAgent = document.getElementById('editDeliveryAgent');
-                editDeliveryAgent.innerHTML = '<option value="">اختر المندوب</option>';
-                
-                agents.forEach(agent => {
-                    const option = document.createElement('option');
-                    option.value = agent;
-                    option.textContent = agent;
-                    editDeliveryAgent.appendChild(option);
-                });
+                if (editDeliveryAgent) {
+                    editDeliveryAgent.innerHTML = '<option value="">اختر المندوب</option>';
+                    
+                    agents.forEach(agent => {
+                        const option = document.createElement('option');
+                        option.value = agent;
+                        option.textContent = agent;
+                        editDeliveryAgent.appendChild(option);
+                    });
+                }
                 
             } catch (error) {
                 console.error('Error loading agents:', error);
@@ -1879,6 +1896,8 @@
             document.getElementById('remainingBalance').textContent = formatAmount(remainingBalance);
             
             const transactionsList = document.getElementById('dailyTransactions');
+            if (!transactionsList) return;
+            
             transactionsList.innerHTML = '';
             
             if (dailyTransactions.length === 0) {
@@ -1927,13 +1946,13 @@
                                 <span class="font-bold text-lg md:text-xl ${colorClass}">+${formatAmount(transaction.amount)}</span>
                                 <span class="text-xs md:text-sm text-gray-500">${time}</span>
                                 <div class="transaction-actions">
-                                    <button onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                    <button onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-share"></i>
                                     </button>
                                 </div>
@@ -1957,13 +1976,13 @@
                                 <span class="font-bold text-lg md:text-xl ${colorClass}">-${formatAmount(transaction.amount)}</span>
                                 <span class="text-xs md:text-sm text-gray-500">${time}</span>
                                 <div class="transaction-actions">
-                                    <button onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                    <button onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-share"></i>
                                     </button>
                                 </div>
@@ -1988,13 +2007,13 @@
                                 <span class="font-bold text-lg md:text-xl ${colorClass}">-${formatAmount(transaction.amount)}</span>
                                 <span class="text-xs md:text-sm text-gray-500">${time}</span>
                                 <div class="transaction-actions">
-                                    <button onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                    <button onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
+                                    <button type="button" onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
                                         <i class="fas fa-share"></i>
                                     </button>
                                 </div>
@@ -2019,13 +2038,13 @@
                                     <span class="font-bold text-lg md:text-xl ${colorClass}">+${formatAmount(transaction.amount)}</span>
                                     <span class="text-xs md:text-sm text-gray-500">${time}</span>
                                     <div class="transaction-actions">
-                                        <button onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
+                                        <button type="button" onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
+                                        <button type="button" onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                        <button onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
+                                        <button type="button" onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
                                             <i class="fas fa-share"></i>
                                         </button>
                                     </div>
@@ -2048,13 +2067,13 @@
                                     <span class="font-bold text-lg md:text-xl ${colorClass}">-${formatAmount(transaction.amount)}</span>
                                     <span class="text-xs md:text-sm text-gray-500">${time}</span>
                                     <div class="transaction-actions">
-                                        <button onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
+                                        <button type="button" onclick="editTransaction('${transaction.id}')" class="btn-edit text-white px-2 py-1 rounded text-xs">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
+                                        <button type="button" onclick="deleteTransaction('${transaction.id}')" class="btn-delete text-white px-2 py-1 rounded text-xs">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                        <button onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
+                                        <button type="button" onclick="shareTransaction('${transaction.id}')" class="btn-share text-white px-2 py-1 rounded text-xs">
                                             <i class="fas fa-share"></i>
                                         </button>
                                     </div>
@@ -2072,6 +2091,7 @@
         // ========== كشف الحساب التراكمي ==========
         function updateStatement() {
             const statementContent = document.getElementById('statementContent');
+            if (!statementContent) return;
             
             if (allAgentTransactions.length === 0) {
                 statementContent.innerHTML = `
@@ -2297,13 +2317,615 @@
             document.getElementById('shareModal').classList.remove('hidden');
         }
 
-        // ========== باقي الدوال (بدون تغيير) ==========
-        // ... [يتبع باقي الدوال كما هي في الكود الأصلي]
+        // ========== إدارة الحسابات البنكية ==========
+        function showAddAccountModal() {
+            document.getElementById('accountModalTitle').textContent = 'إضافة حساب بنكي جديد';
+            document.getElementById('accountForm').reset();
+            document.getElementById('editAccountId').value = '';
+            document.getElementById('accountModal').classList.remove('hidden');
+        }
 
-        // ملاحظة: تم إضافة الدوال الأساسية فقط للتعديلات المطلوبة
-        // باقي الدوال (إدارة الحسابات البنكية، التعديل والحذف، etc.)
-        // تبقى كما هي في الكود الأصلي
+        function hideAccountModal() {
+            document.getElementById('accountModal').classList.add('hidden');
+        }
 
+        function editBankAccount(accountId) {
+            const account = bankAccounts.find(acc => acc.id === accountId);
+            if (!account) return;
+            
+            document.getElementById('accountModalTitle').textContent = 'تعديل الحساب البنكي';
+            document.getElementById('editAccountId').value = account.id;
+            document.getElementById('accountName').value = account.name;
+            document.getElementById('accountNumber').value = account.number;
+            document.getElementById('cardNumber').value = account.cardNumber || '';
+            document.getElementById('cardHolder').value = account.cardHolder || '';
+            document.getElementById('accountLimit').value = account.limit;
+            
+            document.getElementById('accountModal').classList.remove('hidden');
+        }
+
+        async function saveBankAccount() {
+            const accountId = document.getElementById('editAccountId').value;
+            const accountName = document.getElementById('accountName').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardHolder = document.getElementById('cardHolder').value;
+            const accountLimit = parseFloat(document.getElementById('accountLimit').value);
+            
+            const accountData = {
+                name: accountName,
+                number: accountNumber,
+                cardNumber: cardNumber,
+                cardHolder: cardHolder,
+                limit: accountLimit,
+                currentDeposits: 0,
+                currentWithdrawals: 0,
+                updatedAt: new Date(),
+                updatedBy: currentAgent
+            };
+            
+            try {
+                if (accountId) {
+                    // تعديل حساب موجود
+                    await db.collection('bankAccounts').doc(accountId).update(accountData);
+                    
+                    // تحديث البيانات المحلية
+                    const index = bankAccounts.findIndex(acc => acc.id === accountId);
+                    if (index !== -1) {
+                        bankAccounts[index] = { ...bankAccounts[index], ...accountData };
+                    }
+                    
+                    showSuccessMessage('تم تعديل الحساب البنكي بنجاح!');
+                } else {
+                    // إضافة حساب جديد
+                    accountData.createdAt = new Date();
+                    const result = await db.collection('bankAccounts').add(accountData);
+                    
+                    // إضافة إلى البيانات المحلية
+                    bankAccounts.push({ id: result.id, ...accountData });
+                    
+                    showSuccessMessage('تم إضافة الحساب البنكي بنجاح!');
+                }
+                
+                updateBankAccountsUI();
+                hideAccountModal();
+                
+            } catch (error) {
+                console.error('Error saving bank account:', error);
+                showSuccessMessage('حدث خطأ في حفظ الحساب البنكي');
+            }
+        }
+
+        function confirmDeleteAccount(accountId, accountName) {
+            accountToDelete = accountId;
+            document.getElementById('deleteConfirmText').textContent = `هل أنت متأكد من حذف الحساب البنكي "${accountName}"؟`;
+            document.getElementById('deleteConfirmModal').classList.remove('hidden');
+        }
+
+        function hideDeleteConfirmModal() {
+            document.getElementById('deleteConfirmModal').classList.add('hidden');
+            accountToDelete = null;
+        }
+
+        async function confirmDelete() {
+            if (!accountToDelete) return;
+            
+            try {
+                await db.collection('bankAccounts').doc(accountToDelete).delete();
+                
+                // إزالة من البيانات المحلية
+                bankAccounts = bankAccounts.filter(acc => acc.id !== accountToDelete);
+                
+                updateBankAccountsUI();
+                showSuccessMessage('تم حذف الحساب البنكي بنجاح!');
+                
+            } catch (error) {
+                console.error('Error deleting bank account:', error);
+                showSuccessMessage('حدث خطأ في حذف الحساب البنكي');
+            }
+            
+            hideDeleteConfirmModal();
+        }
+
+        function shareAccountReport(accountId) {
+            const account = bankAccounts.find(acc => acc.id === accountId);
+            if (!account) return;
+            
+            const remaining = account.limit - (account.currentDeposits || 0);
+            const usedPercentage = ((account.currentDeposits || 0) / account.limit * 100).toFixed(1);
+            
+            let report = `🏦 *تقرير الحساب البنكي*\n\n`;
+            report += `🏛️ البنك: ${account.name}\n`;
+            report += `🔢 رقم الحساب: ${account.number}\n`;
+            if (account.cardNumber) {
+                report += `💳 رقم البطاقة: ${account.cardNumber}\n`;
+            }
+            if (account.cardHolder) {
+                report += `👤 صاحب البطاقة: ${account.cardHolder}\n`;
+            }
+            report += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+            report += `💰 السقف اليومي: ${formatAmount(account.limit)} ر.س\n`;
+            report += `📊 المستخدم اليوم: ${formatAmount(account.currentDeposits || 0)} ر.س (${usedPercentage}%)\n`;
+            report += `💸 المتبقي: ${formatAmount(remaining)} ر.س\n`;
+            report += `💳 السحوبات اليوم: ${formatAmount(account.currentWithdrawals || 0)} ر.س\n`;
+            report += `📅 آخر تحديث: ${new Date().toLocaleDateString('en-US')}\n`;
+            
+            document.getElementById('shareText').value = report;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        function shareAllAccountsReport() {
+            let report = `🏦 *تقرير جميع الحسابات البنكية*\n\n`;
+            report += `👤 المندوب: ${currentAgent}\n`;
+            report += `📅 التاريخ: ${new Date().toLocaleDateString('en-US')}\n`;
+            report += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            let totalLimit = 0;
+            let totalUsed = 0;
+            let totalRemaining = 0;
+            let totalWithdrawals = 0;
+            
+            bankAccounts.forEach((account, index) => {
+                const remaining = account.limit - (account.currentDeposits || 0);
+                const usedPercentage = ((account.currentDeposits || 0) / account.limit * 100).toFixed(1);
+                
+                report += `${index + 1}. ${account.name}\n`;
+                report += `   السقف: ${formatAmount(account.limit)} ر.س\n`;
+                report += `   المستخدم: ${formatAmount(account.currentDeposits || 0)} ر.س (${usedPercentage}%)\n`;
+                report += `   المتبقي: ${formatAmount(remaining)} ر.س\n`;
+                report += `   السحوبات: ${formatAmount(account.currentWithdrawals || 0)} ر.س\n\n`;
+                
+                totalLimit += account.limit;
+                totalUsed += (account.currentDeposits || 0);
+                totalRemaining += remaining;
+                totalWithdrawals += (account.currentWithdrawals || 0);
+            });
+            
+            const totalUsedPercentage = ((totalUsed / totalLimit) * 100).toFixed(1);
+            
+            report += `📊 *الإجمالي*\n`;
+            report += `💰 إجمالي السقف: ${formatAmount(totalLimit)} ر.س\n`;
+            report += `📊 إجمالي المستخدم: ${formatAmount(totalUsed)} ر.س (${totalUsedPercentage}%)\n`;
+            report += `💸 إجمالي المتبقي: ${formatAmount(totalRemaining)} ر.س\n`;
+            report += `💳 إجمالي السحوبات: ${formatAmount(totalWithdrawals)} ر.س\n`;
+            
+            document.getElementById('shareText').value = report;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        // ========== تعديل وحذف المعاملات ==========
+        function editTransaction(transactionId) {
+            const transaction = dailyTransactions.find(t => t.id === transactionId);
+            if (!transaction) return;
+            
+            document.getElementById('editTransactionId').value = transaction.id;
+            document.getElementById('editTransactionType').value = transaction.type;
+            document.getElementById('editTransactionAmount').value = transaction.amount;
+            document.getElementById('editTransactionNotes').value = transaction.notes || '';
+            
+            // إخفاء جميع الحقول أولاً
+            document.getElementById('editCollectionFields').classList.add('hidden');
+            document.getElementById('editDepositFields').classList.add('hidden');
+            document.getElementById('editExpenseFields').classList.add('hidden');
+            document.getElementById('editDeliveryFields').classList.add('hidden');
+            
+            // تعبئة الحقول حسب نوع المعاملة
+            switch (transaction.type) {
+                case 'collection':
+                    document.getElementById('editCollectionFields').classList.remove('hidden');
+                    document.getElementById('editCustomerName').value = transaction.customerName || '';
+                    document.getElementById('editCollectionType').value = transaction.collectionType || 'نقدي';
+                    break;
+                case 'deposit':
+                    document.getElementById('editDepositFields').classList.remove('hidden');
+                    // تعبئة الحسابات البنكية في القائمة المنسدلة
+                    const bankSelect = document.getElementById('editBankAccount');
+                    bankSelect.innerHTML = '<option value="">اختر الحساب البنكي</option>';
+                    bankAccounts.forEach(account => {
+                        const option = document.createElement('option');
+                        option.value = account.id;
+                        option.textContent = `${account.name} - ${account.number}`;
+                        if (transaction.bankAccountId === account.id) {
+                            option.selected = true;
+                        }
+                        bankSelect.appendChild(option);
+                    });
+                    break;
+                case 'expense':
+                    document.getElementById('editExpenseFields').classList.remove('hidden');
+                    document.getElementById('editExpenseType').value = transaction.expenseType || 'أخرى';
+                    document.getElementById('editExpenseDescription').value = transaction.description || '';
+                    break;
+                case 'delivery':
+                    document.getElementById('editDeliveryFields').classList.remove('hidden');
+                    document.getElementById('editDeliveryType').value = transaction.deliveryType || 'receive';
+                    document.getElementById('editDeliveryAgent').value = 
+                        transaction.deliveryType === 'receive' ? transaction.fromAgent : transaction.toAgent;
+                    break;
+            }
+            
+            document.getElementById('editTransactionModal').classList.remove('hidden');
+        }
+
+        function hideEditTransactionModal() {
+            document.getElementById('editTransactionModal').classList.add('hidden');
+        }
+
+        function toggleEditTransactionFields() {
+            const type = document.getElementById('editTransactionType').value;
+            
+            // إخفاء جميع الحقول أولاً
+            document.getElementById('editCollectionFields').classList.add('hidden');
+            document.getElementById('editDepositFields').classList.add('hidden');
+            document.getElementById('editExpenseFields').classList.add('hidden');
+            document.getElementById('editDeliveryFields').classList.add('hidden');
+            
+            // إظهار الحقول المناسبة
+            switch (type) {
+                case 'collection':
+                    document.getElementById('editCollectionFields').classList.remove('hidden');
+                    break;
+                case 'deposit':
+                    document.getElementById('editDepositFields').classList.remove('hidden');
+                    break;
+                case 'expense':
+                    document.getElementById('editExpenseFields').classList.remove('hidden');
+                    break;
+                case 'delivery':
+                    document.getElementById('editDeliveryFields').classList.remove('hidden');
+                    break;
+            }
+        }
+
+        async function updateTransaction() {
+            const transactionId = document.getElementById('editTransactionId').value;
+            const type = document.getElementById('editTransactionType').value;
+            const amount = parseFloat(document.getElementById('editTransactionAmount').value);
+            const notes = document.getElementById('editTransactionNotes').value;
+            
+            const transaction = dailyTransactions.find(t => t.id === transactionId);
+            if (!transaction) return;
+            
+            // تحديث البيانات حسب نوع المعاملة
+            let updateData = {
+                amount: amount,
+                notes: notes,
+                updatedAt: new Date()
+            };
+            
+            switch (type) {
+                case 'collection':
+                    updateData.customerName = document.getElementById('editCustomerName').value;
+                    updateData.collectionType = document.getElementById('editCollectionType').value;
+                    break;
+                case 'deposit':
+                    const bankAccountId = document.getElementById('editBankAccount').value;
+                    const account = bankAccounts.find(acc => acc.id === bankAccountId);
+                    if (account) {
+                        updateData.bankAccount = account.name;
+                        updateData.bankAccountId = bankAccountId;
+                    }
+                    break;
+                case 'expense':
+                    updateData.expenseType = document.getElementById('editExpenseType').value;
+                    updateData.description = document.getElementById('editExpenseDescription').value;
+                    break;
+                case 'delivery':
+                    updateData.deliveryType = document.getElementById('editDeliveryType').value;
+                    const deliveryAgent = document.getElementById('editDeliveryAgent').value;
+                    if (updateData.deliveryType === 'receive') {
+                        updateData.fromAgent = deliveryAgent;
+                        updateData.toAgent = currentAgent;
+                    } else {
+                        updateData.fromAgent = currentAgent;
+                        updateData.toAgent = deliveryAgent;
+                    }
+                    break;
+            }
+            
+            try {
+                await db.collection('transactions').doc(transactionId).update(updateData);
+                
+                // تحديث البيانات المحلية
+                Object.assign(transaction, updateData);
+                
+                updateSummary();
+                updateStatement();
+                showSuccessMessage('تم تعديل المعاملة بنجاح!');
+                hideEditTransactionModal();
+                
+            } catch (error) {
+                console.error('Error updating transaction:', error);
+                showSuccessMessage('حدث خطأ في تعديل المعاملة');
+            }
+        }
+
+        async function deleteTransaction(transactionId) {
+            if (!confirm('هل أنت متأكد من حذف هذه المعاملة؟')) return;
+            
+            try {
+                await db.collection('transactions').doc(transactionId).delete();
+                
+                // إزالة من البيانات المحلية
+                dailyTransactions = dailyTransactions.filter(t => t.id !== transactionId);
+                allAgentTransactions = allAgentTransactions.filter(t => t.id !== transactionId);
+                
+                updateSummary();
+                updateStatement();
+                showSuccessMessage('تم حذف المعاملة بنجاح!');
+                
+            } catch (error) {
+                console.error('Error deleting transaction:', error);
+                showSuccessMessage('حدث خطأ في حذف المعاملة');
+            }
+        }
+
+        function shareTransaction(transactionId) {
+            const transaction = dailyTransactions.find(t => t.id === transactionId);
+            if (!transaction) return;
+            
+            const formattedText = generateTransactionText(transaction);
+            document.getElementById('shareText').value = formattedText;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        // ========== مشاركة التقارير ==========
+        function shareWorkData() {
+            const collections = dailyTransactions.filter(t => t.type === 'collection');
+            const deposits = dailyTransactions.filter(t => t.type === 'deposit');
+            const expenses = dailyTransactions.filter(t => t.type === 'expense');
+            const deliveries = dailyTransactions.filter(t => t.type === 'delivery');
+            
+            const totalCollections = collections.reduce((sum, t) => sum + t.amount, 0);
+            const totalDeposits = deposits.reduce((sum, t) => sum + t.amount, 0);
+            const totalExpenses = expenses.reduce((sum, t) => sum + t.amount, 0);
+            
+            const receivedDeliveries = deliveries.filter(t => t.deliveryType === 'receive' && t.toAgent === currentAgent);
+            const sentDeliveries = deliveries.filter(t => t.deliveryType === 'send' && t.fromAgent === currentAgent);
+            
+            const totalReceived = receivedDeliveries.reduce((sum, t) => sum + t.amount, 0);
+            const totalSent = sentDeliveries.reduce((sum, t) => sum + t.amount, 0);
+            
+            const todayBalance = totalCollections + totalReceived - totalDeposits - totalExpenses - totalSent;
+            const currentBalance = previousBalance + todayBalance;
+            
+            let report = `🏢 أبو حذيفة للصرافة والتحويلات\n`;
+            report += `📊 تقرير عمل المندوب\n`;
+            report += `👤 المندوب: ${currentAgent}\n`;
+            report += `📅 التاريخ: ${new Date().toLocaleDateString('en-US')}\n`;
+            report += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            report += `💰 الرصيد السابق: ${formatAmount(previousBalance)} ر.س\n`;
+            report += `💵 إجمالي التحصيلات: ${formatAmount(totalCollections)} ر.س\n`;
+            report += `🏦 إجمالي الإيداعات: ${formatAmount(totalDeposits)} ر.س\n`;
+            report += `💸 إجمالي المصروفات: ${formatAmount(totalExpenses)} ر.س\n`;
+            report += `📥 إجمالي المستلم: ${formatAmount(totalReceived)} ر.س\n`;
+            report += `📤 إجمالي المسلم: ${formatAmount(totalSent)} ر.س\n`;
+            report += `━━━━━━━━━━━━━━━━━━━━\n`;
+            report += `💰 الرصيد الحالي: ${formatAmount(currentBalance)} ر.س\n\n`;
+            
+            report += `📋 تفاصيل العمليات:\n`;
+            report += `• التحصيلات: ${collections.length} عملية\n`;
+            report += `• الإيداعات: ${deposits.length} عملية\n`;
+            report += `• المصروفات: ${expenses.length} عملية\n`;
+            report += `• الاستلام/التسليم: ${deliveries.length} عملية\n`;
+            
+            document.getElementById('shareText').value = report;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        function shareReport() {
+            let report = `🏢 أبو حذيفة للصرافة والتحويلات\n`;
+            report += `📊 تقرير اليوم\n`;
+            report += `👤 المندوب: ${currentAgent}\n`;
+            report += `📅 التاريخ: ${new Date().toLocaleDateString('en-US')}\n`;
+            report += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            report += `📋 ملخص العمليات اليوم:\n\n`;
+            
+            dailyTransactions.forEach((transaction, index) => {
+                const time = formatDateTime(transaction.timestamp);
+                let typeText = '';
+                let amountText = '';
+                
+                switch (transaction.type) {
+                    case 'collection':
+                        typeText = `تحصيل من ${transaction.customerName}`;
+                        amountText = `+${formatAmount(transaction.amount)}`;
+                        break;
+                    case 'deposit':
+                        typeText = `إيداع في ${transaction.bankAccount}`;
+                        amountText = `-${formatAmount(transaction.amount)}`;
+                        break;
+                    case 'expense':
+                        typeText = `مصروف ${transaction.expenseType}`;
+                        amountText = `-${formatAmount(transaction.amount)}`;
+                        break;
+                    case 'delivery':
+                        if (transaction.deliveryType === 'receive') {
+                            typeText = `استلام من ${transaction.fromAgent}`;
+                            amountText = `+${formatAmount(transaction.amount)}`;
+                        } else {
+                            typeText = `تسليم إلى ${transaction.toAgent}`;
+                            amountText = `-${formatAmount(transaction.amount)}`;
+                        }
+                        break;
+                }
+                
+                report += `${index + 1}. ${time}\n`;
+                report += `   ${typeText}\n`;
+                report += `   المبلغ: ${amountText} ر.س\n`;
+                if (transaction.notes) {
+                    report += `   الملاحظات: ${transaction.notes}\n`;
+                }
+                report += `\n`;
+            });
+            
+            document.getElementById('shareText').value = report;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        function copyToClipboard() {
+            const textarea = document.getElementById('shareText');
+            textarea.select();
+            document.execCommand('copy');
+            showSuccessMessage('تم نسخ النص إلى الحافظة!');
+        }
+
+        function hideShareModal() {
+            document.getElementById('shareModal').classList.add('hidden');
+        }
+
+        // ========== التصدير ==========
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont('helvetica');
+            doc.setFontSize(16);
+            
+            const today = new Date().toLocaleDateString('en-US');
+            
+            let yPosition = 20;
+            
+            doc.text('تقرير عمل المندوب - أبو حذيفة للصرافة والتحويلات', 20, yPosition);
+            yPosition += 10;
+            doc.text(`المندوب: ${currentAgent}`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`التاريخ: ${today}`, 20, yPosition);
+            yPosition += 20;
+            
+            // إضافة ملخص العمليات
+            const collections = dailyTransactions.filter(t => t.type === 'collection');
+            const deposits = dailyTransactions.filter(t => t.type === 'deposit');
+            const expenses = dailyTransactions.filter(t => t.type === 'expense');
+            const deliveries = dailyTransactions.filter(t => t.type === 'delivery');
+            
+            const totalCollections = collections.reduce((sum, t) => sum + t.amount, 0);
+            const totalDeposits = deposits.reduce((sum, t) => sum + t.amount, 0);
+            const totalExpenses = expenses.reduce((sum, t) => sum + t.amount, 0);
+            
+            const receivedDeliveries = deliveries.filter(t => t.deliveryType === 'receive' && t.toAgent === currentAgent);
+            const sentDeliveries = deliveries.filter(t => t.deliveryType === 'send' && t.fromAgent === currentAgent);
+            
+            const totalReceived = receivedDeliveries.reduce((sum, t) => sum + t.amount, 0);
+            const totalSent = sentDeliveries.reduce((sum, t) => sum + t.amount, 0);
+            
+            const todayBalance = totalCollections + totalReceived - totalDeposits - totalExpenses - totalSent;
+            const currentBalance = previousBalance + todayBalance;
+            
+            doc.text(`الرصيد السابق: ${formatAmount(previousBalance)} ر.س`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`إجمالي التحصيلات: ${formatAmount(totalCollections)} ر.س`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`إجمالي الإيداعات: ${formatAmount(totalDeposits)} ر.س`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`إجمالي المصروفات: ${formatAmount(totalExpenses)} ر.س`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`إجمالي المستلم: ${formatAmount(totalReceived)} ر.س`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`إجمالي المسلم: ${formatAmount(totalSent)} ر.س`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`الرصيد الحالي: ${formatAmount(currentBalance)} ر.س`, 20, yPosition);
+            yPosition += 20;
+            
+            // إضافة تفاصيل العمليات
+            doc.text('تفاصيل العمليات:', 20, yPosition);
+            yPosition += 10;
+            
+            dailyTransactions.forEach((transaction, index) => {
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                
+                const time = formatDateTime(transaction.timestamp);
+                let typeText = '';
+                let amountText = '';
+                
+                switch (transaction.type) {
+                    case 'collection':
+                        typeText = `تحصيل من ${transaction.customerName}`;
+                        amountText = `+${formatAmount(transaction.amount)}`;
+                        break;
+                    case 'deposit':
+                        typeText = `إيداع في ${transaction.bankAccount}`;
+                        amountText = `-${formatAmount(transaction.amount)}`;
+                        break;
+                    case 'expense':
+                        typeText = `مصروف ${transaction.expenseType}`;
+                        amountText = `-${formatAmount(transaction.amount)}`;
+                        break;
+                    case 'delivery':
+                        if (transaction.deliveryType === 'receive') {
+                            typeText = `استلام من ${transaction.fromAgent}`;
+                            amountText = `+${formatAmount(transaction.amount)}`;
+                        } else {
+                            typeText = `تسليم إلى ${transaction.toAgent}`;
+                            amountText = `-${formatAmount(transaction.amount)}`;
+                        }
+                        break;
+                }
+                
+                doc.text(`${index + 1}. ${time} - ${typeText} - ${amountText} ر.س`, 20, yPosition);
+                yPosition += 10;
+            });
+            
+            doc.save(`report-${currentAgent}-${today}.pdf`);
+        }
+
+        function exportToExcel() {
+            const data = [];
+            
+            // إضافة رأس الجدول
+            data.push(['التاريخ', 'النوع', 'الوصف', 'المبلغ', 'ملاحظات']);
+            
+            // إضافة البيانات
+            dailyTransactions.forEach(transaction => {
+                const time = formatDateTime(transaction.timestamp);
+                let typeText = '';
+                let description = '';
+                
+                switch (transaction.type) {
+                    case 'collection':
+                        typeText = 'تحصيل';
+                        description = `من ${transaction.customerName} - ${transaction.collectionType}`;
+                        break;
+                    case 'deposit':
+                        typeText = 'إيداع';
+                        description = `في ${transaction.bankAccount}`;
+                        break;
+                    case 'expense':
+                        typeText = 'مصروف';
+                        description = `${transaction.expenseType} - ${transaction.description}`;
+                        break;
+                    case 'delivery':
+                        if (transaction.deliveryType === 'receive') {
+                            typeText = 'استلام';
+                            description = `من ${transaction.fromAgent}`;
+                        } else {
+                            typeText = 'تسليم';
+                            description = `إلى ${transaction.toAgent}`;
+                        }
+                        break;
+                }
+                
+                data.push([
+                    time,
+                    typeText,
+                    description,
+                    transaction.amount,
+                    transaction.notes || ''
+                ]);
+            });
+            
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'تقرير العمل');
+            
+            const today = new Date().toLocaleDateString('en-US');
+            XLSX.writeFile(wb, `report-${currentAgent}-${today}.xlsx`);
+        }
     </script>
 </body>
 </html>
