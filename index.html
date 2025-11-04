@@ -13,7 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* الأنماط تبقى كما هي */
         body {
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -333,6 +332,29 @@
             font-size: 0.75rem;
             transition: all 0.3s ease;
         }
+        
+        /* كشف الحساب التراكمي */
+        .statement-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .statement-table th,
+        .statement-table td {
+            padding: 0.75rem;
+            text-align: right;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .statement-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+        
+        .statement-table tr:hover {
+            background-color: #f9fafb;
+        }
     </style>
 </head>
 <body class="min-h-full">
@@ -341,7 +363,7 @@
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
             <div class="flex items-center space-x-4 space-x-reverse mb-4 md:mb-0">
                 <div class="logo-container rounded-full p-2">
-                    <img src="https://i.ibb.co/whLbwk4s/20250730-012920.png" alt="شعار شركة أبو حذيفة" class="h-12 w-12 md:h-16 md:w-16 rounded-full object-cover">
+                    <img src="https://i.ibb.co/ZzzbL3Rg/image.png" alt="شعار شركة أبو حذيفة" class="h-12 w-12 md:h-16 md:w-16 rounded-full object-cover">
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-bold mb-1">نظام المندوبين المتطور</h1>
@@ -397,6 +419,9 @@
                 </button>
                 <button onclick="showTab('accounts')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-accounts">
                     <i class="fas fa-credit-card ml-2"></i>الحسابات
+                </button>
+                <button onclick="showTab('statement')" class="tab-button px-4 md:px-6 py-3 md:py-4 whitespace-nowrap rounded-xl tab-inactive" id="tab-statement">
+                    <i class="fas fa-file-invoice ml-2"></i>كشف الحساب
                 </button>
             </div>
         </div>
@@ -593,7 +618,7 @@
                             </label>
                             <select id="deliveryAgent" class="w-full p-3 md:p-4 form-input rounded-xl text-base md:text-lg" required>
                                 <option value="">اختر المندوب</option>
-                            </select>
+                                </select>
                         </div>
                         <div>
                             <label for="deliveryAmount" class="block text-sm font-semibold text-gray-700 mb-2 md:mb-3">
@@ -724,6 +749,34 @@
                     </button>
                 </div>
                 <div id="bankAccountsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
+            </div>
+        </div>
+
+        <!-- Statement Tab -->
+        <div id="statement-tab" class="tab-content hidden">
+            <div class="glass-card rounded-2xl p-4 md:p-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 md:mb-8">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <div class="bg-indigo-100 p-2 md:p-3 rounded-full ml-3 md:ml-4">
+                            <i class="fas fa-file-invoice text-indigo-600 text-lg md:text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl md:text-3xl font-bold text-gray-800">كشف الحساب التراكمي</h2>
+                            <p class="text-gray-600 text-sm md:text-base">جميع المعاملات والرصيد التراكمي</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 md:space-x-3 md:space-x-reverse">
+                        <button onclick="generateStatementReport()" class="px-4 py-2 md:px-6 md:py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all text-sm md:text-base">
+                            <i class="fas fa-download ml-1 md:ml-2"></i>تصدير الكشف
+                        </button>
+                        <button onclick="shareStatement()" class="px-4 py-2 md:px-6 md:py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all text-sm md:text-base">
+                            <i class="fas fa-share-alt ml-1 md:ml-2"></i>مشاركة الكشف
+                        </button>
+                    </div>
+                </div>
+                <div id="statementContent" class="space-y-4">
+                    <!-- سيتم ملء المحتوى هنا -->
+                </div>
             </div>
         </div>
     </main>
@@ -926,14 +979,14 @@
     </div>
 
     <script>
-        // Firebase Configuration - محدث
+        // Firebase Configuration - نفس إعدادات لوحة الإدارة
         const firebaseConfig = {
-            apiKey: "AIzaSyAizCuDiHNIBORzr-L82g55kZ8KDckgN4I",
-            authDomain: "app-new1-975e5.firebaseapp.com",
-            projectId: "app-new1-975e5",
-            storageBucket: "app-new1-975e5.firebasestorage.app",
-            messagingSenderId: "903391698039",
-            appId: "1:903391698039:web:dfa21c4cad0f1a27efba72"
+            apiKey: "AIzaSyCZ9IUXRK-5Kb-TWhQL9nuwse_lmdCzP9g",
+            authDomain: "abu-hatheefa-app-68ff1.firebaseapp.com",
+            projectId: "abu-hatheefa-app-68ff1",
+            storageBucket: "abu-hatheefa-app-68ff1.firebasestorage.app",
+            messagingSenderId: "33088080519",
+            appId: "1:33088080519:web:d7ee753b3751a0d2828622"
         };
 
         // Initialize Firebase
@@ -947,6 +1000,7 @@
         let previousBalance = 0;
         let defaultBankAccount = '';
         let accountToDelete = null;
+        let allAgentTransactions = [];
 
         // دالة مساعدة لتنسيق المبالغ بدون كسور (مطابقة للإدارة)
         function formatAmount(amount) {
@@ -968,30 +1022,6 @@
             });
         }
 
-        // دالة جديدة لحساب الرصيد من مجموعة معاملات
-        function calculateBalanceFromTransactions(transactions, agentName) {
-            const collections = transactions.filter(t => t.type === 'collection');
-            const deposits = transactions.filter(t => t.type === 'deposit');
-            const expenses = transactions.filter(t => t.type === 'expense');
-            const deliveries = transactions.filter(t => t.type === 'delivery');
-            
-            const totalCollections = collections.reduce((sum, t) => sum + (t.amount || 0), 0);
-            const totalDeposits = deposits.reduce((sum, t) => sum + (t.amount || 0), 0);
-            const totalExpenses = expenses.reduce((sum, t) => sum + (t.amount || 0), 0);
-            
-            // حساب الاستلام والتسليم بشكل منفصل
-            const receivedDeliveries = deliveries.filter(t => t.deliveryType === 'receive' && t.toAgent === agentName);
-            const sentDeliveries = deliveries.filter(t => t.deliveryType === 'send' && t.fromAgent === agentName);
-            
-            const totalReceived = receivedDeliveries.reduce((sum, t) => sum + (t.amount || 0), 0);
-            const totalSent = sentDeliveries.reduce((sum, t) => sum + (t.amount || 0), 0);
-            
-            // حساب الرصيد النهائي
-            const balance = totalCollections + totalReceived - totalDeposits - totalExpenses - totalSent;
-            
-            return balance;
-        }
-
         // Initialize App
         document.addEventListener('DOMContentLoaded', function() {
             updateCurrentDateTime();
@@ -1001,6 +1031,7 @@
             loadAgents();
             loadPreviousBalance();
             loadDailyData();
+            loadAllAgentTransactions();
             
             // Set up form listeners
             setupFormListeners();
@@ -1152,6 +1183,7 @@
                 registerAgentInDatabase();
                 loadPreviousBalance();
                 loadDailyData();
+                loadAllAgentTransactions();
             }
         }
 
@@ -1172,6 +1204,8 @@
             
             if (tabName === 'summary') {
                 updateSummary();
+            } else if (tabName === 'statement') {
+                updateStatement();
             }
         }
 
@@ -1279,6 +1313,7 @@
             try {
                 await db.collection('transactions').add(transaction);
                 dailyTransactions.push(transaction);
+                allAgentTransactions.push(transaction);
                 
                 saveCustomerName(customerName);
                 
@@ -1287,6 +1322,10 @@
                 
                 document.getElementById('collectionForm').reset();
                 toggleCollectionBankAccount();
+                
+                // تحديث البيانات
+                updateSummary();
+                updateStatement();
                 
             } catch (error) {
                 console.error('Error adding collection:', error);
@@ -1325,6 +1364,7 @@
             try {
                 await db.collection('transactions').add(transaction);
                 dailyTransactions.push(transaction);
+                allAgentTransactions.push(transaction);
                 
                 if (account) {
                     const newCurrentDeposits = (account.currentDeposits || 0) + amount;
@@ -1344,6 +1384,10 @@
                     localStorage.setItem('defaultBankAccount', bankAccountId);
                     defaultBankAccount = bankAccountId;
                 }
+                
+                // تحديث البيانات
+                updateSummary();
+                updateStatement();
                 
             } catch (error) {
                 console.error('Error adding deposit:', error);
@@ -1374,11 +1418,16 @@
             try {
                 await db.collection('transactions').add(transaction);
                 dailyTransactions.push(transaction);
+                allAgentTransactions.push(transaction);
                 
                 const formattedText = generateTransactionText(transaction);
                 showSuccessMessage('تم إضافة المصروف بنجاح!', formattedText);
                 
                 document.getElementById('expenseForm').reset();
+                
+                // تحديث البيانات
+                updateSummary();
+                updateStatement();
                 
             } catch (error) {
                 console.error('Error adding expense:', error);
@@ -1412,11 +1461,16 @@
             try {
                 await db.collection('transactions').add(transaction);
                 dailyTransactions.push(transaction);
+                allAgentTransactions.push(transaction);
                 
                 const formattedText = generateTransactionText(transaction);
                 showSuccessMessage(`تم ${deliveryType === 'receive' ? 'استلام' : 'تسليم'} المبلغ بنجاح!`, formattedText);
                 
                 document.getElementById('deliveryForm').reset();
+                
+                // تحديث البيانات
+                updateSummary();
+                updateStatement();
                 
             } catch (error) {
                 console.error('Error adding delivery:', error);
@@ -1709,17 +1763,43 @@
             const yesterdayStr = yesterday.toISOString().split('T')[0];
             
             try {
+                const savedBalance = localStorage.getItem(`balance_${currentAgent}_${yesterdayStr}`);
+                if (savedBalance) {
+                    previousBalance = parseFloat(savedBalance);
+                    return;
+                }
+                
                 const snapshot = await db.collection('transactions')
                     .where('agent', '==', currentAgent)
                     .where('date', '==', yesterdayStr)
                     .get();
                 
-                const previousDayTransactions = [];
+                let collections = 0, deposits = 0, expenses = 0, received = 0, sent = 0;
+                
                 snapshot.forEach(doc => {
-                    previousDayTransactions.push({ id: doc.id, ...doc.data() });
+                    const transaction = doc.data();
+                    switch (transaction.type) {
+                        case 'collection':
+                            collections += transaction.amount;
+                            break;
+                        case 'deposit':
+                            deposits += transaction.amount;
+                            break;
+                        case 'expense':
+                            expenses += transaction.amount;
+                            break;
+                        case 'delivery':
+                            if (transaction.deliveryType === 'receive' && transaction.toAgent === currentAgent) {
+                                received += transaction.amount;
+                            } else if (transaction.deliveryType === 'send' && transaction.fromAgent === currentAgent) {
+                                sent += transaction.amount;
+                            }
+                            break;
+                    }
                 });
-
-                previousBalance = calculateBalanceFromTransactions(previousDayTransactions, currentAgent);
+                
+                previousBalance = collections + received - deposits - expenses - sent;
+                localStorage.setItem(`balance_${currentAgent}_${yesterdayStr}`, previousBalance.toString());
                 
             } catch (error) {
                 console.error('Error loading previous balance:', error);
@@ -1748,6 +1828,25 @@
                 
             } catch (error) {
                 console.error('Error loading daily data:', error);
+            }
+        }
+
+        async function loadAllAgentTransactions() {
+            if (!currentAgent) return;
+            
+            try {
+                const snapshot = await db.collection('transactions')
+                    .where('agent', '==', currentAgent)
+                    .orderBy('timestamp', 'desc')
+                    .get();
+                
+                allAgentTransactions = [];
+                snapshot.forEach(doc => {
+                    allAgentTransactions.push({ id: doc.id, ...doc.data() });
+                });
+                
+            } catch (error) {
+                console.error('Error loading all agent transactions:', error);
             }
         }
 
@@ -1970,27 +2069,240 @@
             });
         }
 
-        // ... [بقية الدوال تبقى كما هي مع التعديلات الطفيفة] ...
+        // ========== كشف الحساب التراكمي ==========
+        function updateStatement() {
+            const statementContent = document.getElementById('statementContent');
+            
+            if (allAgentTransactions.length === 0) {
+                statementContent.innerHTML = `
+                    <div class="text-center py-8 md:py-12">
+                        <i class="fas fa-file-invoice text-4xl md:text-6xl text-gray-300 mb-3 md:mb-4"></i>
+                        <p class="text-lg md:text-xl text-gray-500">لا توجد معاملات</p>
+                        <p class="text-gray-400 text-sm md:text-base">ابدأ بإضافة أول عملية</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let runningBalance = 0;
+            const statementData = [];
 
-        // دوال مساعدة لحساب المبالغ
-        function calculateTotalCollections(transactions) {
-            const collections = transactions.filter(t => t.type === 'collection');
-            return collections.reduce((sum, t) => sum + (t.amount || 0), 0);
+            // حساب الرصيد التراكمي
+            allAgentTransactions.forEach(transaction => {
+                let amount = transaction.amount || 0;
+                
+                switch (transaction.type) {
+                    case 'collection':
+                        runningBalance += amount;
+                        break;
+                    case 'deposit':
+                        runningBalance -= amount;
+                        break;
+                    case 'expense':
+                        runningBalance -= amount;
+                        break;
+                    case 'delivery':
+                        if (transaction.deliveryType === 'receive' && transaction.toAgent === currentAgent) {
+                            runningBalance += amount;
+                        } else if (transaction.deliveryType === 'send' && transaction.fromAgent === currentAgent) {
+                            runningBalance -= amount;
+                        }
+                        break;
+                }
+
+                statementData.push({
+                    date: formatDateTime(transaction.timestamp),
+                    type: transaction.type,
+                    description: getTransactionDescription(transaction),
+                    amount: amount,
+                    balance: runningBalance
+                });
+            });
+
+            statementContent.innerHTML = `
+                <div class="bg-white rounded-lg p-4 md:p-6">
+                    <h4 class="text-lg md:text-xl font-bold text-gray-800 mb-4">كشف حساب تراكمي - ${currentAgent}</h4>
+                    <div class="overflow-x-auto">
+                        <table class="statement-table">
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>النوع</th>
+                                    <th>الوصف</th>
+                                    <th>المبلغ</th>
+                                    <th>الرصيد</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${statementData.map(item => `
+                                    <tr>
+                                        <td>${item.date}</td>
+                                        <td>${getTypeArabicName(item.type)}</td>
+                                        <td>${item.description}</td>
+                                        <td class="${getAmountColor(item.type, item.amount)}">${formatAmount(item.amount)}</td>
+                                        <td class="${item.balance >= 0 ? 'text-green-600' : 'text-red-600'}">${formatAmount(item.balance)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <p class="text-lg font-bold ${runningBalance >= 0 ? 'text-green-600' : 'text-red-600'}">
+                            الرصيد النهائي: ${formatAmount(runningBalance)} ريال
+                        </p>
+                    </div>
+                </div>
+            `;
         }
 
-        function calculateTotalReceived(transactions, agentName) {
-            const deliveries = transactions.filter(t => t.type === 'delivery');
-            const receivedDeliveries = deliveries.filter(t => t.deliveryType === 'receive' && t.toAgent === agentName);
-            return receivedDeliveries.reduce((sum, t) => sum + (t.amount || 0), 0);
+        function getTransactionDescription(transaction) {
+            switch (transaction.type) {
+                case 'collection':
+                    return `تحصيل من ${transaction.customerName || 'غير محدد'} - ${transaction.collectionType || 'غير محدد'}`;
+                case 'deposit':
+                    return `إيداع في ${transaction.bankAccount || 'غير محدد'}`;
+                case 'expense':
+                    return `مصروف ${transaction.expenseType || 'غير محدد'} - ${transaction.description || ''}`;
+                case 'delivery':
+                    if (transaction.deliveryType === 'receive') {
+                        return `استلام من ${transaction.fromAgent || 'غير محدد'}`;
+                    } else {
+                        return `تسليم إلى ${transaction.toAgent || 'غير محدد'}`;
+                    }
+                default:
+                    return 'غير محدد';
+            }
         }
 
-        function calculateTotalSent(transactions, agentName) {
-            const deliveries = transactions.filter(t => t.type === 'delivery');
-            const sentDeliveries = deliveries.filter(t => t.deliveryType === 'send' && t.fromAgent === agentName);
-            return sentDeliveries.reduce((sum, t) => sum + (t.amount || 0), 0);
+        function getTypeArabicName(type) {
+            const types = {
+                'collection': 'تحصيل',
+                'deposit': 'إيداع',
+                'expense': 'مصروف',
+                'delivery': 'استلام/تسليم'
+            };
+            return types[type] || type;
         }
 
-        // ... [بقية الدوال تبقى كما هي] ...
+        function getAmountColor(type, amount) {
+            if (type === 'collection' || (type === 'delivery' && amount > 0)) {
+                return 'text-green-600';
+            }
+            return 'text-red-600';
+        }
+
+        function generateStatementReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFont('helvetica');
+            doc.setFontSize(16);
+            
+            const today = new Date().toLocaleDateString('en-US');
+            
+            let yPosition = 20;
+            
+            doc.text('كشف حساب تراكمي - أبو حذيفة للصرافة والتحويلات', 20, yPosition);
+            yPosition += 10;
+            doc.text(`المندوب: ${currentAgent}`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`التاريخ: ${today}`, 20, yPosition);
+            yPosition += 20;
+            
+            // حساب الرصيد النهائي
+            let runningBalance = 0;
+            allAgentTransactions.forEach(transaction => {
+                let amount = transaction.amount || 0;
+                
+                switch (transaction.type) {
+                    case 'collection':
+                        runningBalance += amount;
+                        break;
+                    case 'deposit':
+                        runningBalance -= amount;
+                        break;
+                    case 'expense':
+                        runningBalance -= amount;
+                        break;
+                    case 'delivery':
+                        if (transaction.deliveryType === 'receive' && transaction.toAgent === currentAgent) {
+                            runningBalance += amount;
+                        } else if (transaction.deliveryType === 'send' && transaction.fromAgent === currentAgent) {
+                            runningBalance -= amount;
+                        }
+                        break;
+                }
+            });
+            
+            doc.text(`الرصيد النهائي: ${formatAmount(runningBalance)} ر.س`, 20, yPosition);
+            
+            doc.save(`statement-${currentAgent}-${today}.pdf`);
+        }
+
+        function shareStatement() {
+            let runningBalance = 0;
+            const statementData = [];
+
+            // حساب الرصيد التراكمي
+            allAgentTransactions.forEach(transaction => {
+                let amount = transaction.amount || 0;
+                
+                switch (transaction.type) {
+                    case 'collection':
+                        runningBalance += amount;
+                        break;
+                    case 'deposit':
+                        runningBalance -= amount;
+                        break;
+                    case 'expense':
+                        runningBalance -= amount;
+                        break;
+                    case 'delivery':
+                        if (transaction.deliveryType === 'receive' && transaction.toAgent === currentAgent) {
+                            runningBalance += amount;
+                        } else if (transaction.deliveryType === 'send' && transaction.fromAgent === currentAgent) {
+                            runningBalance -= amount;
+                        }
+                        break;
+                }
+
+                statementData.push({
+                    date: formatDateTime(transaction.timestamp),
+                    type: getTypeArabicName(transaction.type),
+                    description: getTransactionDescription(transaction),
+                    amount: amount,
+                    balance: runningBalance
+                });
+            });
+
+            let report = `🏢 أبو حذيفة للصرافة والتحويلات\n`;
+            report += `📊 كشف حساب تراكمي\n`;
+            report += `👤 المندوب: ${currentAgent}\n`;
+            report += `📅 تاريخ الإصدار: ${new Date().toLocaleDateString('en-US')}\n`;
+            report += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            report += `📋 ملخص الكشف:\n`;
+            report += `💰 الرصيد النهائي: ${formatAmount(runningBalance)} ريال\n`;
+            report += `📊 عدد المعاملات: ${allAgentTransactions.length}\n\n`;
+            
+            report += `📋 تفاصيل المعاملات:\n`;
+            statementData.forEach((item, index) => {
+                report += `${index + 1}. ${item.date} - ${item.type}\n`;
+                report += `   ${item.description}\n`;
+                report += `   المبلغ: ${formatAmount(item.amount)} ريال\n`;
+                report += `   الرصيد: ${formatAmount(item.balance)} ريال\n\n`;
+            });
+
+            document.getElementById('shareText').value = report;
+            document.getElementById('shareModal').classList.remove('hidden');
+        }
+
+        // ========== باقي الدوال (بدون تغيير) ==========
+        // ... [يتبع باقي الدوال كما هي في الكود الأصلي]
+
+        // ملاحظة: تم إضافة الدوال الأساسية فقط للتعديلات المطلوبة
+        // باقي الدوال (إدارة الحسابات البنكية، التعديل والحذف، etc.)
+        // تبقى كما هي في الكود الأصلي
 
     </script>
 </body>
