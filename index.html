@@ -989,12 +989,8 @@
             appId: "1:33088080519:web:d7ee753b3751a0d2828622"
         };
 
-        // Initialize Firebase
-        try {
-            firebase.initializeApp(firebaseConfig);
-        } catch (error) {
-            console.log('Firebase already initialized');
-        }
+        // Initialize Firebase - بنفس طريقة تطبيق الإدارة
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         // Global Variables
@@ -1005,6 +1001,7 @@
         let defaultBankAccount = '';
         let accountToDelete = null;
         let allAgentTransactions = [];
+        let allAgents = [];
 
         // دالة مساعدة لتنسيق المبالغ بدون كسور (مطابقة للإدارة)
         function formatAmount(amount) {
@@ -1030,14 +1027,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateCurrentDateTime();
             checkAgentName();
-            loadBankAccounts();
-            loadCustomers();
-            loadAgents();
-            loadPreviousBalance();
-            loadDailyData();
-            loadAllAgentTransactions();
             
-            // Set up form listeners
+            // Setup form listeners
             setupFormListeners();
             
             // Update time every second
@@ -1151,8 +1142,28 @@
                 currentAgent = savedName;
                 document.getElementById('agentName').textContent = `مرحباً، ${currentAgent}`;
                 registerAgentInDatabase();
+                loadAllData(); // تحميل جميع البيانات بعد تعريف المندوب
             } else {
                 document.getElementById('nameModal').classList.remove('hidden');
+            }
+        }
+
+        // ========== دالة تحميل جميع البيانات ==========
+        async function loadAllData() {
+            try {
+                // تحميل جميع البيانات بالتوازي
+                await Promise.all([
+                    loadBankAccounts(),
+                    loadAgents(),
+                    loadDailyData(),
+                    loadAllAgentTransactions()
+                ]);
+                
+                loadPreviousBalance();
+                
+            } catch (error) {
+                console.error('Error loading all data:', error);
+                showSuccessMessage('حدث خطأ في تحميل البيانات');
             }
         }
 
@@ -1187,9 +1198,7 @@
                 document.getElementById('nameModal').classList.add('hidden');
                 
                 registerAgentInDatabase();
-                loadPreviousBalance();
-                loadDailyData();
-                loadAllAgentTransactions();
+                loadAllData(); // تحميل جميع البيانات بعد تعريف المندوب
             }
         }
 
@@ -1318,8 +1327,6 @@
 
             try {
                 await db.collection('transactions').add(transaction);
-                dailyTransactions.push(transaction);
-                allAgentTransactions.push(transaction);
                 
                 saveCustomerName(customerName);
                 
@@ -1329,9 +1336,8 @@
                 document.getElementById('collectionForm').reset();
                 toggleCollectionBankAccount();
                 
-                // تحديث البيانات
-                updateSummary();
-                updateStatement();
+                // إعادة تحميل جميع البيانات بدلاً من التحديث الجزئي
+                loadAllData();
                 
             } catch (error) {
                 console.error('Error adding collection:', error);
@@ -1369,8 +1375,6 @@
 
             try {
                 await db.collection('transactions').add(transaction);
-                dailyTransactions.push(transaction);
-                allAgentTransactions.push(transaction);
                 
                 if (account) {
                     const newCurrentDeposits = (account.currentDeposits || 0) + amount;
@@ -1391,9 +1395,8 @@
                     defaultBankAccount = bankAccountId;
                 }
                 
-                // تحديث البيانات
-                updateSummary();
-                updateStatement();
+                // إعادة تحميل جميع البيانات بدلاً من التحديث الجزئي
+                loadAllData();
                 
             } catch (error) {
                 console.error('Error adding deposit:', error);
@@ -1423,17 +1426,14 @@
 
             try {
                 await db.collection('transactions').add(transaction);
-                dailyTransactions.push(transaction);
-                allAgentTransactions.push(transaction);
                 
                 const formattedText = generateTransactionText(transaction);
                 showSuccessMessage('تم إضافة المصروف بنجاح!', formattedText);
                 
                 document.getElementById('expenseForm').reset();
                 
-                // تحديث البيانات
-                updateSummary();
-                updateStatement();
+                // إعادة تحميل جميع البيانات بدلاً من التحديث الجزئي
+                loadAllData();
                 
             } catch (error) {
                 console.error('Error adding expense:', error);
@@ -1466,17 +1466,14 @@
 
             try {
                 await db.collection('transactions').add(transaction);
-                dailyTransactions.push(transaction);
-                allAgentTransactions.push(transaction);
                 
                 const formattedText = generateTransactionText(transaction);
                 showSuccessMessage(`تم ${deliveryType === 'receive' ? 'استلام' : 'تسليم'} المبلغ بنجاح!`, formattedText);
                 
                 document.getElementById('deliveryForm').reset();
                 
-                // تحديث البيانات
-                updateSummary();
-                updateStatement();
+                // إعادة تحميل جميع البيانات بدلاً من التحديث الجزئي
+                loadAllData();
                 
             } catch (error) {
                 console.error('Error adding delivery:', error);
@@ -2495,7 +2492,7 @@
 
         // ========== تعديل وحذف المعاملات ==========
         function editTransaction(transactionId) {
-            const transaction = dailyTransactions.find(t => t.id === transactionId);
+            const transaction = allAgentTransactions.find(t => t.id === transactionId);
             if (!transaction) return;
             
             document.getElementById('editTransactionId').value = transaction.id;
@@ -2583,7 +2580,7 @@
             const amount = parseFloat(document.getElementById('editTransactionAmount').value);
             const notes = document.getElementById('editTransactionNotes').value;
             
-            const transaction = dailyTransactions.find(t => t.id === transactionId);
+            const transaction = allAgentTransactions.find(t => t.id === transactionId);
             if (!transaction) return;
             
             // تحديث البيانات حسب نوع المعاملة
@@ -2626,13 +2623,11 @@
             try {
                 await db.collection('transactions').doc(transactionId).update(updateData);
                 
-                // تحديث البيانات المحلية
-                Object.assign(transaction, updateData);
-                
-                updateSummary();
-                updateStatement();
                 showSuccessMessage('تم تعديل المعاملة بنجاح!');
                 hideEditTransactionModal();
+                
+                // إعادة تحميل جميع البيانات بدلاً من التحديث الجزئي
+                loadAllData();
                 
             } catch (error) {
                 console.error('Error updating transaction:', error);
@@ -2646,13 +2641,10 @@
             try {
                 await db.collection('transactions').doc(transactionId).delete();
                 
-                // إزالة من البيانات المحلية
-                dailyTransactions = dailyTransactions.filter(t => t.id !== transactionId);
-                allAgentTransactions = allAgentTransactions.filter(t => t.id !== transactionId);
-                
-                updateSummary();
-                updateStatement();
                 showSuccessMessage('تم حذف المعاملة بنجاح!');
+                
+                // إعادة تحميل جميع البيانات بدلاً من التحديث الجزئي
+                loadAllData();
                 
             } catch (error) {
                 console.error('Error deleting transaction:', error);
@@ -2661,7 +2653,7 @@
         }
 
         function shareTransaction(transactionId) {
-            const transaction = dailyTransactions.find(t => t.id === transactionId);
+            const transaction = allAgentTransactions.find(t => t.id === transactionId);
             if (!transaction) return;
             
             const formattedText = generateTransactionText(transaction);
